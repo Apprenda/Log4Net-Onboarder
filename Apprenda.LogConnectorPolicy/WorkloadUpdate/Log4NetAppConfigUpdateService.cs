@@ -1,4 +1,29 @@
-﻿namespace Apprenda.LogConnectorPolicy
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Log4NetAppConfigUpdateService.cs" company="Apprenda, Inc.">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2015 Apprenda Inc.
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in all
+//   copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//   SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace Apprenda.Log4NetConnectorPolicy
 {
     using System;
     using System.Collections.Generic;
@@ -70,7 +95,7 @@
             LogElementWorker.UpdateLoggingElement(log4netElement);
 
             SaveDocument();
-            return _messages;            
+            return _messages;
         }
 
         /// <summary>
@@ -88,9 +113,9 @@
             }
 
             var loggingElement = new XElement("log4net");
-            
+
             _configurationNode.Add(loggingElement);
-            
+
             return loggingElement;
         }
 
@@ -101,14 +126,15 @@
         {
             if (_messages.Any())
             {
-               _messages.Add("Skipping configuration section update due to previous messages.");
+                _messages.Add("Skipping configuration section update due to previous messages.");
                 return;
             }
 
             _configurationNode = _document.Element("configuration");
             if (_configurationNode == null)
             {
-                _messages.Add("No <configuration> element was found, which is required for Web.config and app.config. Something drastic seems to be wrong with the workload.");
+                _messages.Add(
+                    "No <configuration> element was found, which is required for Web.config and app.config. Something drastic seems to be wrong with the workload.");
                 return;
             }
 
@@ -122,7 +148,11 @@
             var logSectionConfigElement = configurationSectionsElement.XPathSelectElement("//section[@name='log4net']");
             if (logSectionConfigElement == null)
             {
-                configurationSectionsElement.Add(new XElement("section", new XAttribute("name", "log4net"), new XAttribute("type", "System.Configuration.IgnoreSectionHandler")));    
+                configurationSectionsElement.Add(
+                    new XElement(
+                        "section", 
+                        new XAttribute("name", "log4net"), 
+                        new XAttribute("type", "System.Configuration.IgnoreSectionHandler")));
             }
         }
 

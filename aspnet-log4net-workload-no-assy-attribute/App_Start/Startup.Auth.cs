@@ -1,10 +1,39 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Startup.Auth.cs" company="Apprenda, Inc.">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2015 Apprenda Inc.
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in all
+//   copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//   SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+
 using Owin;
+
 using aspnet_log4net_workload_no_assy_attribute.Models;
 
 namespace aspnet_log4net_workload_no_assy_attribute
@@ -22,19 +51,30 @@ namespace aspnet_log4net_workload_no_assy_attribute
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                Provider = new CookieAuthenticationProvider
-                {
-                    // Enables the application to validate the security stamp when the user logs in.
-                    // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
-                }
-            });            
+            app.UseCookieAuthentication(
+                new CookieAuthenticationOptions
+                    {
+                        AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                        LoginPath = new PathString("/Account/Login"),
+                        Provider =
+                            new CookieAuthenticationProvider
+                                {
+                                    // Enables the application to validate the security stamp when the user logs in.
+                                    // This is a security feature which is used when you change a password or add an external login to your account.  
+                                    OnValidateIdentity =
+                                        SecurityStampValidator
+                                        .OnValidateIdentity
+                                        <ApplicationUserManager,
+                                        ApplicationUser>(
+                                            validateInterval:
+                                        TimeSpan.FromMinutes(30),
+                                            regenerateIdentity:
+                                        (manager, user) =>
+                                        user
+                                            .GenerateUserIdentityAsync
+                                            (manager))
+                                }
+                    });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.

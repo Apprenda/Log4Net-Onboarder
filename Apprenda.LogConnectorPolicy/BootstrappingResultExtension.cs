@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="KnownPathWorkloadInspector.cs" company="Apprenda, Inc.">
+// <copyright file="BootstrappingResultExtension.cs" company="Apprenda, Inc.">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2015 Apprenda Inc.
@@ -23,46 +23,50 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Apprenda.Log4NetConnectorPolicy
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Apprenda.API.Extension.Bootstrapping;
-    using Apprenda.Integrations.Inspection;
 
     /// <summary>
-    /// Workload Inspector which modifies a specified path without probing.
+    /// The bootstrapping result extensions.
     /// </summary>
-    public class KnownPathWorkloadInspector : IWorkloadInspector
+    public class BootstrappingResultExtension
     {
         /// <summary>
-        /// The path provided.
+        /// Roll up multiple bootstrapping results, success if no error messages 
         /// </summary>
-        private readonly string _path;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KnownPathWorkloadInspector"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
+        /// <param name="results">
+        /// The results.
         /// </param>
-        public KnownPathWorkloadInspector(string path)
-        {
-            this._path = path;
-        }
-
-        /// <summary>
-        /// Apply the 
-        /// </summary>
         /// <returns>
         /// The <see cref="BootstrappingResult"/>.
         /// </returns>
-        public BootstrappingResult Execute()
+        public static BootstrappingResult Consolidate(IEnumerable<BootstrappingResult> results)
         {
-            var worker = new Log4NetConfigurationUpdateService(_path);
-            var results = worker.Update().ToArray();
+            var realized = results as BootstrappingResult[] ?? results.ToArray();
+            var rolledUp = SuccessIfNoMessages(realized.SelectMany(r => r.Errors));
+            rolledUp.Succeeded = realized.All(r => r.Succeeded);
+            return rolledUp;
+        }
 
-            return results.Any() ? BootstrappingResult.Failure(results) : BootstrappingResult.Success();
+        /// <summary>
+        /// Use an enumerable collection of error messages to determine if a BootstrappingResult of Success or Failure should be returned.
+        /// </summary>
+        /// <param name="messages">
+        /// The enumerable collection of error messages which 
+        /// </param>
+        /// <returns>
+        /// The <see cref="BootstrappingResult"/>.
+        /// </returns>
+        public static BootstrappingResult SuccessIfNoMessages(IEnumerable<string> messages)
+        {
+            var realized = messages.ToArray();
+
+            return realized.Any() ? BootstrappingResult.Failure(realized) : BootstrappingResult.Success();
         }
     }
 }

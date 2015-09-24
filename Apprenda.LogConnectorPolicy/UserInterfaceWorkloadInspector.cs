@@ -1,4 +1,29 @@
-﻿namespace Apprenda.LogConnectorPolicy
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserInterfaceWorkloadInspector.cs" company="Apprenda, Inc.">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2015 Apprenda Inc.
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in all
+//   copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//   SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace Apprenda.Log4NetConnectorPolicy
 {
     using System.IO;
     using System.Linq;
@@ -15,6 +40,11 @@
     /// </summary>
     public class UserInterfaceWorkloadInspector : WorkloadInspectorBase
     {
+        /// <summary>
+        /// The name of the embedded assembly resource.
+        /// </summary>
+        private const string EmbeddedAssembly = "Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll";
+
         /// <summary>
         /// The request being inspected.
         /// </summary>
@@ -63,49 +93,58 @@
         private BootstrappingResult ProbeUiComponentForAssemblies(string uiPath)
         {
             var binaryPath = Path.Combine(uiPath, "bin");
+            var appenderPath = Path.Combine(binaryPath, "log4net.Apprenda.dll");
+
             if (!File.Exists(Path.Combine(binaryPath, "log4net.dll")))
             {
                 // if log4net is not present in the component, this bootstrapper succeeds by not modifying the workload.
                 return BootstrappingResult.Success();
             }
 
-            var assemblyStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll");
-            if (assemblyStream != null)
+            var localAssembly = Assembly.GetExecutingAssembly();
+            using (var assemblyStream = localAssembly.GetManifestResourceStream(EmbeddedAssembly))
             {
-                var appenderPath = Path.Combine(binaryPath, "log4net.Apprenda.dll");
-                if (!File.Exists(appenderPath))
+                if (assemblyStream != null)
                 {
-                    assemblyStream.CopyTo(new FileStream(appenderPath, FileMode.Create));
+                    if (!File.Exists(appenderPath))
+                    {
+                        try
+                        {
+                            assemblyStream.CopyTo(new FileStream(appenderPath, FileMode.Create));
+                        }
+                        catch
+                        {
+                            {
+                                return
+                                    BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
+                            }
+                        }
+                    }
                 }
             }
-            else
-            {
-                return BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
-            }
 
-            var potentialAssemblies =
-                Directory.EnumerateFiles(binaryPath, "*.dll")
-                    .Where(p => AssemblyExtensions.HasDependencyOn(p, "log4net"));
+            var potentialAssemblies = Directory.EnumerateFiles(binaryPath, "*.dll").Except(new[] { appenderPath }).ToList();
+            var dependentAssemblies = potentialAssemblies.Where(p => AssemblyExtensions.HasDependencyOn(p, "log4net"));
 
-            var configFilePaths = potentialAssemblies.Select(
+            var configFilePaths = dependentAssemblies.Select(
                 filePath =>
+                {
+                    var configFileName = GetXmlConfiguratorProperty(filePath, "ConfigFile");
+                    if (configFileName != null)
                     {
-                        var configFileName = GetXmlConfiguratorProperty(filePath, "ConfigFile");
-                        if (configFileName != null)
-                        {
-                            return Path.Combine(uiPath, configFileName);
-                        }
+                        return Path.Combine(uiPath, configFileName);
+                    }
 
-                        var configExtension = GetXmlConfiguratorProperty(filePath, "ConfigFileExtension") ?? "config";
-                        return filePath + (configExtension.StartsWith(".") ? "." : string.Empty) + configExtension;
-                    });
+                    var configExtension = GetXmlConfiguratorProperty(filePath, "ConfigFileExtension") ?? "config";
+                    return filePath + (configExtension.StartsWith(".") ? string.Empty : ".") + configExtension;
+                });
 
             var messages =
                 configFilePaths.SelectMany(
                     configFilePath => new Log4NetConfigurationUpdateService(configFilePath).Update());
 
             var webConfigUpdateMessages = new Log4NetAppConfigUpdateService(Path.Combine(uiPath, "Web.config")).Update();
-            
+
             return BootstrappingResultExtension.SuccessIfNoMessages(messages.Union(webConfigUpdateMessages));
         }
     }

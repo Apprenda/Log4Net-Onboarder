@@ -33,8 +33,7 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="SaaSGrid.API, Version=6.0.1.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="SaaSGrid.API.Local, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="SaaSGrid.API, Version=6.0.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
