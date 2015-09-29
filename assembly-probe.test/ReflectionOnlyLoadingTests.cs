@@ -23,6 +23,10 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using F2F.Sandbox;
+using F2F.Testing.Xunit;
+
 namespace assembly_probe.test
 {
     using Apprenda.Integrations.Inspection;
@@ -36,14 +40,19 @@ namespace assembly_probe.test
     /// <summary>
     /// Tests for the AssemblyExtensions which use Mono.Cecil to inspect assemblies.
     /// </summary>
-    public class ReflectionOnlyLoadingTests
+    public class ReflectionOnlyLoadingTests : TestFixture
     {
+        public ReflectionOnlyLoadingTests()
+        {
+            Register(new FileSandbox(new ResourceFileLocator(GetType())));
+        }
+
         [Fact]
         public void CanFindXmlConfiguratorAttribute()
         {
             var configFileValue =
                 AssemblyExtensions.GetAssemblyAttributePropertyValue<XmlConfiguratorAttribute, string>(
-                    "aspnet-log4net-workload-assy-attribute.dll", 
+                    Use<FileSandbox>().ProvideFile("Resources.aspnet-log4net-workload-assy-attribute.dll"), 
                     "ConfigFile");
             Assert.Equal("default.log4net", configFileValue);
         }
@@ -53,7 +62,7 @@ namespace assembly_probe.test
         {
             var descriptionValue =
                 AssemblyExtensions.GetAssemblyAttributePropertyValue<CustomAssemblyAttribute, string>(
-                    "aspnet-log4net-workload-assy-attribute.dll", 
+                    Use<FileSandbox>().ProvideFile("Resources.aspnet-log4net-workload-assy-attribute.dll"), 
                     "Description");
             Assert.Null(descriptionValue);
         }

@@ -45,6 +45,7 @@ namespace Apprenda.Log4NetConnectorPolicy
             if (rootElement == null)
             {
                 rootElement = new XElement("root", new XElement("level", new XAttribute("value", "DEBUG")));
+                loggingElement.Add(rootElement);
             }
             else
             {

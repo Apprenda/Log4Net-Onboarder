@@ -25,6 +25,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 
 namespace Apprenda.Log4NetConnectorPolicy
@@ -42,6 +43,8 @@ namespace Apprenda.Log4NetConnectorPolicy
     {
         /// <summary>
         /// Component types supported for this bootstrap policy.
+        /// Note that ComponentType.WindowsService does not have a mechanism to connect to the Apprenda API at this time, 
+        /// so we do not allow connection to that component type.
         /// </summary>
         private readonly ComponentType[] _allowComponentTypes =
             {
@@ -74,6 +77,10 @@ namespace Apprenda.Log4NetConnectorPolicy
                                     "Cannot apply explicit log4net configuration to component type "
                                     + bootstrappingRequest.ComponentType + "."
                                 });
+                }
+                if (!configFileProperty.Values.Any())
+                {
+                    continue;
                 }
 
                 var results =

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="KnownPathWorkloadInspector.cs" company="Apprenda, Inc.">
+// <copyright file="LogElementWorkerTests.cs" company="Apprenda, Inc.">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2015 Apprenda Inc.
@@ -23,46 +23,56 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Apprenda.Log4NetConnectorPolicy
+
+
+using FluentAssertions;
+
+namespace Apprenda.Log4NetConnectorPolicy.Tests
 {
-    using System.Linq;
+    using System.Xml.Linq;
+    using Xunit;
 
-    using Apprenda.API.Extension.Bootstrapping;
-    using Apprenda.Integrations.Inspection;
-
-    /// <summary>
-    /// Workload Inspector which modifies a specified path without probing.
-    /// </summary>
-    public class KnownPathWorkloadInspector : IWorkloadInspector
+    public class LogElementWorkerTests
     {
-        /// <summary>
-        /// The path provided.
-        /// </summary>
-        private readonly string _path;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KnownPathWorkloadInspector"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public KnownPathWorkloadInspector(string path)
+        [Fact]
+        public void InjectedXmlHasProperForm()
         {
-            this._path = path;
+            var container = new XElement("log4net");
+            LogElementWorker.UpdateLoggingElement(container);
+            
+            container.ToString().Should().Be(XElement.Parse(@"
+<log4net>
+    <root>
+        <level value='DEBUG'/>
+        <appender-ref ref='ApprendaAppender'/>
+    </root>
+    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaBufferingAppender, log4net.Apprenda'/>
+</log4net>").ToString());
         }
 
-        /// <summary>
-        /// Apply the 
-        /// </summary>
-        /// <returns>
-        /// The <see cref="BootstrappingResult"/>.
-        /// </returns>
-        public BootstrappingResult Execute()
+        [Fact]
+        public void InjectedXmlDoesNotRemoveExistingAppenders()
         {
-            var worker = new Log4NetConfigurationUpdateService(_path);
-            var results = worker.Update().ToArray();
+            var container = XElement.Parse(@"
+<log4net>
+<root>
+<level value='WARN' />
+<appender-ref ref='FileLog' />
+</root>
+<appender name='FileLog' type='RollingFileAppender' />
+</log4net>");
+            LogElementWorker.UpdateLoggingElement(container);
 
-            return results.Any() ? BootstrappingResult.Failure(results) : BootstrappingResult.Success();
+            container.ToString().Should().Be(XElement.Parse(@"
+<log4net>
+<root>
+<level value='DEBUG' />
+<appender-ref ref='FileLog' />
+<appender-ref ref='ApprendaAppender' />
+</root>
+<appender name='FileLog' type='RollingFileAppender' />
+    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaBufferingAppender, log4net.Apprenda'/>
+</log4net>").ToString());
         }
     }
 }

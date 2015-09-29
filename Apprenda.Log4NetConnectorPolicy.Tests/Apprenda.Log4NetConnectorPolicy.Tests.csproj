@@ -5,14 +5,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{35C36A3C-3F8C-48DB-BC48-1983C6B12815}</ProjectGuid>
+    <ProjectGuid>{25DA9CCC-63CC-4A4F-A41B-EA01494EECE2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>assembly_probe.test</RootNamespace>
-    <AssemblyName>assembly-probe.test</AssemblyName>
+    <RootNamespace>Apprenda.Log4NetConnectorPolicy.Tests</RootNamespace>
+    <AssemblyName>Apprenda.Log4NetConnectorPolicy.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>efa43a3f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>d86144fb</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,28 +45,18 @@
       <HintPath>..\packages\F2F.Testing.Xunit.Sandbox.1.2.1.0\lib\net40\F2F.Testing.Xunit.Sandbox.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.0.0\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Mdb.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Pdb.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Rocks.dll</HintPath>
+    <Reference Include="FluentAssertions.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.0.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,29 +76,50 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReflectionOnlyLoadingTests.cs" />
+    <Compile Include="LogElementWorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UiWorkloadWithAssemblyAttributeTests.cs" />
+    <Compile Include="WorkloadInspectorTestFixture.cs" />
+    <Compile Include="ZipFileLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\aspnet-log4net-attribute-standalone.zip" />
+    <EmbeddedResource Include="Resources\aspnet-log4net-explicit-standalone.zip" />
+    <EmbeddedResource Include="Resources\aspnet-config-sectionhandler-netfx4.zip" />
+    <EmbeddedResource Include="Resources\aspnet-config-sectionhandler.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Apprenda.Integrations.Inspection\Apprenda.Integrations.Inspection.csproj">
       <Project>{9948c1f4-af5d-4cc0-883c-e6b58a448100}</Project>
       <Name>Apprenda.Integrations.Inspection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomAttributeTestTarget\TestSupport.CustomAttributes.csproj">
-      <Project>{25513161-5220-42d0-951e-1e5514c776a6}</Project>
-      <Name>TestSupport.CustomAttributes</Name>
+    <ProjectReference Include="..\Apprenda.LogConnectorPolicy\Apprenda.Log4NetConnectorPolicy.csproj">
+      <Project>{f161b096-f642-4ace-aabd-9b7b7ee62528}</Project>
+      <Name>Apprenda.Log4NetConnectorPolicy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\aspnet-log4net-workload-assy-attribute\aspnet-log4net-workload-assy-attribute.csproj">
+      <Project>{f897dacf-c7e8-4e10-b278-14fbfff67d65}</Project>
+      <Name>aspnet-log4net-workload-assy-attribute</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\aspnet-log4net-workload-no-assy-attribute\aspnet-log4net-workload-no-assy-attribute.csproj">
+      <Project>{0076c311-9966-4530-aec9-739e40feead0}</Project>
+      <Name>aspnet-log4net-workload-no-assy-attribute</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\aspnet-webconfig-log4netconfighandler\aspnet-webconfig-log4netconfighandler.csproj">
+      <Project>{28ada196-8507-4329-a178-07104d6f9cff}</Project>
+      <Name>aspnet-webconfig-log4netconfighandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\aspnet-webconfig-netfx4\aspnet_webconfig_netfx4.csproj">
+      <Project>{f265daa2-d3b7-4f77-b881-d6babee56731}</Project>
+      <Name>aspnet_webconfig_netfx4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\log4net.Apprenda\log4net.Apprenda.csproj">
+      <Project>{13066117-a30b-4070-a466-5222ccfee449}</Project>
+      <Name>log4net.Apprenda</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\aspnet-log4net-workload-assy-attribute.dll" />
-    <EmbeddedResource Include="Resources\aspnet-log4net-workload-no-assy-attribute.dll" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

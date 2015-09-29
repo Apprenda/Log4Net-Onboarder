@@ -62,6 +62,7 @@ namespace Apprenda.Log4NetConnectorPolicy
         public override BootstrappingResult Execute()
         {
             var assemblyPath = this._request.ComponentPath;
+            // use dll.config probing
             var saasGridAppConfig = Path.Combine(assemblyPath, @"SaaSGrid.SMART.ServiceBootstrap.exe.config");
 
             if (!File.Exists(Path.Combine(assemblyPath, "log4net.dll")))

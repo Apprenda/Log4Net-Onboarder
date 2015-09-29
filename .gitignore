@@ -215,3 +215,4 @@ FakesAssemblies/
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
+Apprenda.Log4NetConnectorPolicy.Tests/Resources/

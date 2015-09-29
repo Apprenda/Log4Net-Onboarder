@@ -126,7 +126,6 @@ namespace Apprenda.Log4NetConnectorPolicy
             var loggingElement = _configurationDocument.XPathSelectElement("//log4net");
             if (loggingElement == null)
             {
-                this.InjectDefaultConfiguration();
                 loggingElement = new XElement("log4net");
                 _configurationDocument.Add(loggingElement);
             }

@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="BootstrappingResultExtension.cs" />
     <Compile Include="DotNetLog4NetConnector.cs" />
-    <Compile Include="KnownPathWorkloadInspector.cs" />
     <Compile Include="WorkloadInspectorBase.cs" />
     <Compile Include="WorkloadUpdate\Log4NetAppConfigUpdateService.cs" />
     <Compile Include="WorkloadUpdate\Log4NetConfigurationUpdateService.cs" />
@@ -68,9 +67,7 @@
       <Name>Apprenda.Integrations.Inspection</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AssemblyInspection\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\log4net.Apprenda.dll" />
   </ItemGroup>
