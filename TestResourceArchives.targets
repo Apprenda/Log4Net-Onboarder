@@ -58,13 +58,14 @@
   <Target Name="CopyServiceTestResources">
     <PropertyGroup>
       <PublishWorkDir>$(ProjectDir)\publish</PublishWorkDir>
-      <ZipFilePath>$(PublishWorkDir)\$(ZipFileName)</ZipFilePath>
+      <ZipFilePath>$(TestResourcesPath)\$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
     <Message Text="Clearing work directory $(PublishWorkDir)"/>
     <RemoveDir Directories="$(PublishWorkDir)" />
-    <Copy SourceFiles="@(Content)" DestinationFiles="@(Content->'$(PublishWorkDir)\services\service\%(RelativeDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(Link)" DestinationFiles="@(Link->'$(PublishWorkDir)\services\service\%(RelativeDir)%(Filename)%(Extension)')"/>
-    <Message Text="Source Files: @(Content);@(Link)"/>
+    <Message Text="PackageArchive files: @(PackArchive)" />
+    <Copy SourceFiles="@(Content)" DestinationFiles="@(Content->'$(PublishWorkDir)\services\service\%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(PackArchive)" DestinationFiles="@(PackArchive->'$(PublishWorkDir)\services\service\%(Filename)%(Extension)')"/>
+    <Message Text="Source Files: @(Content);@(PackArchive)"/>
     <Zip SourceFolder="$(PublishWorkDir)" OutputFileName="$(ZipFilePath)" />
   </Target>
 </Project>

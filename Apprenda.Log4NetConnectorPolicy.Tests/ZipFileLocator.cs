@@ -13,7 +13,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
     public class ZipFileLocator : IFileLocator, IDisposable
     {
         private ZipArchive _archive;
-
+        
         public ZipFileLocator(ZipArchive archive)
         {
             _archive = archive;
@@ -26,13 +26,17 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
 
         public bool Exists(string fileName)
         {
-
-            return Archive.Entries.Any(e => e.FullName.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
+            string altSeparator = fileName.Replace('/', '\\');
+            return Archive.Entries.Any(e => e.FullName.Equals(fileName, StringComparison.InvariantCultureIgnoreCase))
+                || Archive.Entries.Any(e => e.FullName.Equals(altSeparator, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public IEnumerable<string> EnumeratePath(string path)
         {
-            return Archive.Entries.Where(e => e.FullName.StartsWith(path)).Select(e => e.FullName);
+            string altSeparator = path.Replace('/', '\\');
+            return Archive.Entries.Where(e => e.FullName.StartsWith(path, StringComparison.InvariantCultureIgnoreCase))
+                .Union(Archive.Entries.Where(e => e.FullName.StartsWith(altSeparator, StringComparison.InvariantCultureIgnoreCase)))
+                .Select(e => e.FullName);
         }
 
         public void CopyTo(string fileName, string destinationPath)
@@ -44,8 +48,11 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
 
             if (!File.Exists(destinationPath))
             {
+                string altSeparator = fileName.Replace('/', '\\');
                 Archive.Entries
-                    .Single(e => e.FullName.Equals(fileName, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(e => e.FullName.Equals(fileName, StringComparison.InvariantCultureIgnoreCase))
+                    .Union(Archive.Entries.Where(e => e.FullName.Equals(altSeparator, StringComparison.InvariantCultureIgnoreCase)))
+                    .FirstOrDefault()
                     .ExtractToFile(destinationPath);
             }
         }

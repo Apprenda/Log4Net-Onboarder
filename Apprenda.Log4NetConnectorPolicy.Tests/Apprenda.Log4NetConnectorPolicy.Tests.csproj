@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apprenda.API.Extension, Version=6.0.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="F2F.Sandbox, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\F2F.Sandbox.1.1.0.0\lib\net20\F2F.Sandbox.dll</HintPath>
       <Private>True</Private>
@@ -43,6 +44,10 @@
     </Reference>
     <Reference Include="F2F.Testing.Xunit.Sandbox, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\F2F.Testing.Xunit.Sandbox.1.2.1.0\lib\net40\F2F.Testing.Xunit.Sandbox.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FakeItEasy, Version=1.25.3.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FakeItEasy.1.25.3\lib\net40\FakeItEasy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -76,18 +81,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractBootstrapPolicyTestFixture.cs" />
+    <Compile Include="BootstrappingResultExtensions.cs" />
     <Compile Include="LogElementWorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UiWorkloadWithAssemblyAttributeTests.cs" />
-    <Compile Include="WorkloadInspectorTestFixture.cs" />
+    <Compile Include="ResourceNames.cs" />
+    <Compile Include="SupportResourcesArePresentTests.cs" />
+    <Compile Include="WebConfigAndExplicitConfigurationNetFX4.cs" />
     <Compile Include="ZipFileLocator.cs" />
+    <Compile Include="ZipFileLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\aspnet-log4net-attribute-standalone.zip" />
     <EmbeddedResource Include="Resources\aspnet-log4net-explicit-standalone.zip" />
     <EmbeddedResource Include="Resources\aspnet-config-sectionhandler-netfx4.zip" />
     <EmbeddedResource Include="Resources\aspnet-config-sectionhandler.zip" />
+    <EmbeddedResource Include="Resources\aspnet-nologging.zip" />
+    <EmbeddedResource Include="Resources\wcf-appconfig-attribute.zip" />
+    <EmbeddedResource Include="Resources\wcf-appconfig-explicit.zip" />
+    <EmbeddedResource Include="Resources\wcf-standalone-attribute.zip" />
+    <EmbeddedResource Include="Resources\wcf-standalone-explicit.zip" />
+    <EmbeddedResource Include="Resources\aspnet-config-attribute.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Apprenda.Integrations.Inspection\Apprenda.Integrations.Inspection.csproj">
