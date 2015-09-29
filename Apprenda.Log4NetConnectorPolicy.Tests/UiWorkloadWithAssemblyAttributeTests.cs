@@ -57,9 +57,10 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         private ZipArchive _archive;
         public ZipFileLocatorTests()
         {
+            var testType = GetType();
             this.Register(
-                Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream(GetType(), "Resources.aspnet-config-sectionhandler.zip"), 
+                testType.Assembly
+                    .GetManifestResourceStream(testType, "Resources.aspnet-config-sectionhandler.zip"), 
                 "ZipStream");
             
             this.Register(_archive = new ZipArchive(Use<Stream>("ZipStream")), "Archive");
