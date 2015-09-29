@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="default.log4net" />
+    <Content Include="default.log4net">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -81,7 +83,6 @@
     <PackArchive Include="$(OutDir)\*.exe.config" />
     <PackArchive Include="$(OutDir)\*.dll.config" />
   </ItemGroup>
-
   <PropertyGroup>
     <ZipFileName>wcf-standalone-attribute.zip</ZipFileName>
     <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>

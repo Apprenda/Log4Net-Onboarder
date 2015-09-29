@@ -14,9 +14,9 @@ using Xunit;
 
 namespace Apprenda.Log4NetConnectorPolicy.Tests
 {
-    public class Log4NetConnectorPolicyTests : AbstractBootstrapPolicyTestFixture
+    public class InvalidWorkloadTests : AbstractBootstrapPolicyTestFixture
     {
-        public Log4NetConnectorPolicyTests()
+        public InvalidWorkloadTests()
         {
             UseAssemblyArchiveStream(ResourceNames.AspWithoutLog4Net);
         }
@@ -42,7 +42,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         }
 
         [Fact]
-        public void WhenBootstrapperRequest_IsUi_WithoutLog4Net_ReturnsSuccess()
+        public void WhenBootstrapperRequest_IsUiWithoutLog4Net_ReturnsSuccess()
         {
             var sandbox = Use<FileSandbox>();
             var bootstrapPath = sandbox.ProvideDirectory("interfaces/root");
@@ -53,7 +53,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         }
 
         [Fact]
-        public void WhenBootstrapperRequest_IsUi_WithoutLog4Net_FilesAreUnchanged()
+        public void WhenBootstrapperRequest_IsUiWithoutLog4Net_FilesAreUnchanged()
         {
             var sandbox = Use<FileSandbox>();
             var bootstrapPath = sandbox.ProvideDirectory("interfaces/root");

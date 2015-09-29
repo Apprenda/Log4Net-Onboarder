@@ -84,7 +84,10 @@ namespace Apprenda.Log4NetConnectorPolicy
                     var appenderPath = Path.Combine(assemblyPath, "log4net.Apprenda.dll");
                     if (!File.Exists(appenderPath))
                     {
-                        assemblyStream.CopyTo(new FileStream(appenderPath, FileMode.Create));
+                        using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                        {
+                            assemblyStream.CopyTo(appenderStream );
+                        }
                     }
                 }
                 else

@@ -81,18 +81,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractBootstrapPolicyTestFixture.cs" />
-    <Compile Include="BootstrappingResultExtensions.cs" />
-    <Compile Include="LogElementWorkerTests.cs" />
+    <Compile Include="WorkloadTests\AbstractBootstrapPolicyTestFixture.cs" />
+    <Compile Include="WorkloadTests\AspFx4WorkloadTests.cs" />
+    <Compile Include="Harness\BootstrappingResultExtensions.cs" />
+    <Compile Include="WorkerTests\LogElementWorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceNames.cs" />
-    <Compile Include="SupportResourcesArePresentTests.cs" />
-    <Compile Include="WebConfigAndExplicitConfigurationNetFX4.cs" />
-    <Compile Include="ZipFileLocator.cs" />
-    <Compile Include="ZipFileLocatorTests.cs" />
+    <Compile Include="Harness\ResourceNames.cs" />
+    <Compile Include="SupportTests\SupportResourcesArePresentTests.cs" />
+    <Compile Include="WorkloadTests\InvalidWorkloadTests.cs" />
+    <Compile Include="WorkloadTests\WcfWithStandaloneAttributeWorkloadTests.cs" />
+    <Compile Include="Harness\ZipFileLocator.cs" />
+    <Compile Include="SupportTests\ZipFileLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\aspnet-log4net-attribute-standalone.zip" />
     <EmbeddedResource Include="Resources\aspnet-log4net-explicit-standalone.zip" />

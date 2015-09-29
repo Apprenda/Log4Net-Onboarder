@@ -110,7 +110,10 @@ namespace Apprenda.Log4NetConnectorPolicy
                     {
                         try
                         {
-                            assemblyStream.CopyTo(new FileStream(appenderPath, FileMode.Create));
+                            using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                            {
+                                assemblyStream.CopyTo(appenderStream);
+                            }
                         }
                         catch
                         {

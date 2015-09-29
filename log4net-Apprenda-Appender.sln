@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-Standalone-Explicit", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-config-attribute", "aspnet-config-attribute\aspnet-config-attribute.csproj", "{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payload", "Payload", "{05CD3E3F-B642-45A5-80AC-98E4C9CB7FA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{13066117-A30B-4070-A466-5222CCFEE449} = {05CD3E3F-B642-45A5-80AC-98E4C9CB7FA4}
 		{F897DACF-C7E8-4E10-B278-14FBFFF67D65} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}
 		{35C36A3C-3F8C-48DB-BC48-1983C6B12815} = {64E3D4BD-07A7-4D54-8ECD-78C6BFEC271A}
 		{0076C311-9966-4530-AEC9-739E40FEEAD0} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}

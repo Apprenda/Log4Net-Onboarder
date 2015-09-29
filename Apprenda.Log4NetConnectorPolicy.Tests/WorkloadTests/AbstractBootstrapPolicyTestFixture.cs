@@ -42,7 +42,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
 
             return Directory.GetDirectories(root)
                 .Select(GetLastModified)
-                .Union(new[] { Directory.GetFiles(root).Max(f => new FileInfo(f).LastWriteTime) }).Max();
+                .Union(Directory.GetFiles(root).Select(f => new FileInfo(f).LastWriteTime)).Max();
         }
 
     }

@@ -36,7 +36,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         InlineData(ResourceNames.WcfWithConfigSectionAttribute),
         InlineData(ResourceNames.WcfWithConfigSectionExplicit),
         InlineData(ResourceNames.WcfWithStandaloneAttribute),
-        InlineData(ResourceNames.WcfWithStandaloneExcplicit),
+        InlineData(ResourceNames.WcfWithStandaloneExplicit),
         InlineData(ResourceNames.AspWithConfigSectionAttribute)
         ]
         public void RequiredResourcesArePresent(string resourceName)
