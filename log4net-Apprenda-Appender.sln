@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{64E3D4BD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{381BE0D4-1DB9-41C3-AFE5-46473E6CEE90}"
 	ProjectSection(SolutionItems) = preProject
+		BootstrapPolicyCreator.targets = BootstrapPolicyCreator.targets
 		TestResourceArchives.targets = TestResourceArchives.targets
 	EndProjectSection
 EndProject

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="CreateBsp" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <BspFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <OutputFileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression" />
+      <Reference Include="System.IO.Compression.FileSystem"/>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.IO.Compression" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        try {
+          Log.LogMessage("Packaging Bootstrap Policy to " + OutputFileName + ".");
+          using (var memoryStream = new MemoryStream())
+          {
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach(var item in BspFiles)
+                {
+                  var itemPath = item.ItemSpec;
+                  if (File.Exists(itemPath)){
+                    Log.LogMessage("... adding " + itemPath + " as " + Path.GetFileName(itemPath) + ".");
+                    var entry = archive.CreateEntryFromFile(itemPath, Path.GetFileName(itemPath));
+                  } else {
+                    Log.LogError("Could not find {0}.", itemPath);
+                  }
+                }                
+            }
+            using (var outStream = File.Open(OutputFileName, FileMode.Create))
+            {
+              memoryStream.Seek(0, SeekOrigin.Begin);
+              memoryStream.CopyTo(outStream);
+            }
+          }
+          return true;
+        }
+        catch (Exception ex) {
+          Log.LogErrorFromException(ex);
+          return false;
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

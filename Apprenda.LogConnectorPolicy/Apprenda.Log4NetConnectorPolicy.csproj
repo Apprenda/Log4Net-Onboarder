@@ -72,11 +72,13 @@
     <EmbeddedResource Include="Resources\log4net.Apprenda.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <Import Project="$(SolutionDir)\BootstrapPolicyCreator.targets"/>
   <Target Name="BeforeBuild">
   </Target>
+  <ItemGroup>
+    <BspFiles Include="$(TargetDir)*.dll" Exclude="" />
+  </ItemGroup>
   <Target Name="AfterBuild">
+    <CreateBsp BspFiles="@(BspFiles)" OutputFileName="$(SolutionDir)\Apprenda.Log4Net.BSP.zip" />
   </Target>
-  -->
 </Project>

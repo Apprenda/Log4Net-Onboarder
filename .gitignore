@@ -216,3 +216,4 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 Apprenda.Log4NetConnectorPolicy.Tests/Resources/
+Apprenda.Log4Net.BSP.zip

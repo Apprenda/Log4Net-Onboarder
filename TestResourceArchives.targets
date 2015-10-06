@@ -35,10 +35,6 @@
       </Code>
     </Task>
   </UsingTask>
-  <PropertyGroup>
-    <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources</TestResourcesPath>
-    <ZipFileName>archive.zip</ZipFileName>
-  </PropertyGroup>
 
   <Target Name="CopyUiTestResources">
     <PropertyGroup>
