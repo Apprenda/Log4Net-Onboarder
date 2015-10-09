@@ -2,66 +2,75 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <UsingTask TaskName="Zip" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
-      <SourceFolder ParameterType="System.String" Required="true"/>
+      <ZipFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
       <OutputFileName ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Reference Include="System.IO.Compression" />
-      <Reference Include="System.IO.Compression.FileSystem" />
+      <Reference Include="System.IO.Compression.FileSystem"/>
+      <Using Namespace="System.IO" />
       <Using Namespace="System.IO.Compression" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
-                try {
-                    SourceFolder = Path.GetFullPath(SourceFolder);
-                    OutputFileName = Path.GetFullPath(OutputFileName);
-                      
-                    Log.LogMessage("Package zip... (" + OutputFileName + " )");
-                    
-                    // Prepare output temp file
-                    var tmpFile = Path.ChangeExtension(OutputFileName, ".zip.tmp");
-                    File.Delete(tmpFile);
-                    // Zip folder
-                    ZipFile.CreateFromDirectory(SourceFolder, tmpFile);
-                    // Replace output file
-                    File.Delete(OutputFileName);
-                    File.Move(tmpFile, OutputFileName);
-                    return true;
-                }
-                catch (Exception ex) {
-                    Log.LogErrorFromException(ex);
-                    return false;
-                }
-            ]]>
+        try {
+          Func<string,string> normalize = path => Path.GetFullPath(path).Replace(Path.GetFullPath(".")+@"\", string.Empty);
+          Log.LogMessage("Packaging Bootstrap Policy to " + OutputFileName + ".");
+          using (var memoryStream = new MemoryStream())
+          {
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach(var item in ZipFiles)
+                {
+                  var itemPath = item.ItemSpec;
+                  if (File.Exists(itemPath)){
+                    Log.LogMessage("... adding " + itemPath + " as " + normalize(itemPath) + ".");
+                    var entry = archive.CreateEntryFromFile(itemPath, normalize(itemPath));
+                  } else {
+                    Log.LogError("Could not find {0}.", itemPath);
+                  }
+                }                
+            }
+            using (var outStream = File.Open(OutputFileName, FileMode.Create))
+            {
+              memoryStream.Seek(0, SeekOrigin.Begin);
+              memoryStream.CopyTo(outStream);
+            }
+          }
+          return true;
+        }
+        catch (Exception ex) {
+          Log.LogErrorFromException(ex);
+          return false;
+        }
+        ]]>
       </Code>
     </Task>
   </UsingTask>
-
+  <PropertyGroup>
+    <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>
+  </PropertyGroup>
   <Target Name="CopyUiTestResources">
     <PropertyGroup>
-      <PublishWorkDir>$(ProjectDir)publish</PublishWorkDir>
-      <ZipFilePath>$(TestResourcesPath)\$(ZipFileName)</ZipFilePath>
+      <ZipFilePath>$(TestResourcesPath)$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
-    <RemoveDir Directories="$(PublishWorkDir)" />
-    <Message Text="Copying files to $(PublishWorkDir) UI Root location" />
-    <Message Text="Content Files: @(Content)"/>
-    <Copy SourceFiles="@(Content)" DestinationFiles="@(Content->'$(PublishWorkDir)\interfaces\root\%(RelativeDir)%(Filename)%(Extension)')" />
-    <Message Text="Linked Files: @(WebArchiveLink)"/>
-    <Copy SourceFiles="@(WebArchiveLink)" DestinationFiles="@(WebArchiveLink->'$(PublishWorkDir)\interfaces\root\%(RelativeDir)%(Filename)%(Extension)')"/>
-    <Message Text="Creating archive from files in $(PublishWorkDir) based at $(PublishWorkDir) to $(ZipFilePath)"/>
-    <Zip SourceFolder="$(PublishWorkDir)" OutputFileName="$(ZipFilePath)" />
+    <Message Text="Zipping UI Test Resource to $(TestResourcesPath)"/>
+    <ItemGroup>
+      <ZipFiles Include="@(Content)"/>
+      <ZipFiles Include="@(WebArchiveLink)"/>
+    </ItemGroup>
+    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" />
   </Target>
 
   <Target Name="CopyServiceTestResources">
     <PropertyGroup>
-      <PublishWorkDir>$(ProjectDir)\publish</PublishWorkDir>
-      <ZipFilePath>$(TestResourcesPath)\$(ZipFileName)</ZipFilePath>
+      <ZipFilePath>$(TestResourcesPath)$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
-    <Message Text="Clearing work directory $(PublishWorkDir)"/>
-    <RemoveDir Directories="$(PublishWorkDir)" />
-    <Message Text="PackageArchive files: @(PackArchive)" />
-    <Copy SourceFiles="@(Content)" DestinationFiles="@(Content->'$(PublishWorkDir)\services\service\%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(PackArchive)" DestinationFiles="@(PackArchive->'$(PublishWorkDir)\services\service\%(Filename)%(Extension)')"/>
-    <Message Text="Source Files: @(Content);@(PackArchive)"/>
-    <Zip SourceFolder="$(PublishWorkDir)" OutputFileName="$(ZipFilePath)" />
+    <Message Text="Zipping UI Test Resource to $(TestResourcesPath)"/>
+    <ItemGroup>
+      <ZipFiles Include="@(Content)"/>
+      <ZipFiles Include="@(PackArchive)"/>
+    </ItemGroup>
+    <Message Text="Processing %(ZipFiles.Identity)" />
+    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" />
   </Target>
 </Project>
