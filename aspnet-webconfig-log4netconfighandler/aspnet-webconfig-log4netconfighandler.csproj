@@ -109,6 +109,7 @@
   <PropertyGroup>
     <ZipFileName>aspnet-config-sectionhandler.zip</ZipFileName>
     <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>
+    <PrefixPath>interfaces\root\</PrefixPath>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <CallTarget Targets="CopyUiTestResources" />

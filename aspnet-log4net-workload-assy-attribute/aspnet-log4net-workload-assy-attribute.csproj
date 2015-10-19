@@ -278,6 +278,7 @@
   </ItemGroup>
   <PropertyGroup>
     <ZipFileName>aspnet-log4net-attribute-standalone.zip</ZipFileName>
+    <PrefixPath>interfaces\root\</PrefixPath>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)\assembly-probe.test\Resources" />

@@ -101,6 +101,7 @@
   </ItemGroup>
   <PropertyGroup>
     <ZipFileName>aspnet-nologging.zip</ZipFileName>
+    <PrefixPath>interfaces\root\</PrefixPath>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <CallTarget Targets="CopyUiTestResources" />

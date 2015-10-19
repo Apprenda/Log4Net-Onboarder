@@ -78,14 +78,15 @@
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\TestResourceArchives.targets" />
   <ItemGroup>
-    <PackArchive Include="$(OutDir)\*.dll" />
-    <PackArchive Include="$(OutDir)\*.exe" />
-    <PackArchive Include="$(OutDir)\*.exe.config" />
-    <PackArchive Include="$(OutDir)\*.dll.config" />
+    <PackArchive Include="$(OutDir)*.dll" />
+    <PackArchive Include="$(OutDir)*.exe" />
+    <PackArchive Include="$(OutDir)*.exe.config" />
+    <PackArchive Include="$(OutDir)*.dll.config" />
   </ItemGroup>
   <PropertyGroup>
     <ZipFileName>wcf-standalone-attribute.zip</ZipFileName>
     <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>
+    <PrefixPath>services\service\</PrefixPath>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <CallTarget Targets="CopyServiceTestResources" />

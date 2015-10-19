@@ -28,8 +28,6 @@ namespace Apprenda.Log4NetConnectorPolicy
     using Apprenda.API.Extension.Bootstrapping;
     using Apprenda.Integrations.Inspection;
 
-    using log4net.Config;
-
     /// <summary>
     /// The log4net workload inspector base.
     /// </summary>
@@ -57,8 +55,9 @@ namespace Apprenda.Log4NetConnectorPolicy
         /// </returns>
         protected string GetXmlConfiguratorProperty(string filePath, string propertyName)
         {
-            return AssemblyExtensions.GetAssemblyAttributePropertyValue<XmlConfiguratorAttribute, string>(
+            return AssemblyExtensions.GetAssemblyAttributePropertyValue<string>(
                 filePath, 
+                "log4net.Config.XmlConfiguratorAttribute",
                 propertyName);
         }
     }

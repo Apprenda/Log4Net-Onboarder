@@ -58,9 +58,38 @@ namespace Apprenda.Integrations.Inspection
             string assemblyPath, 
             string namedProperty)
         {
+            var attributeFullName = typeof(TAttribute).FullName;
+            return GetAssemblyAttributePropertyValue<TValue>(assemblyPath, attributeFullName, namedProperty);
+        }
+
+        /// <summary>
+        /// Load an assembly definition and probe for the existence of a specific attribute type by name. 
+        /// If that attribute is present, return the value of the named argument (property) of that attribute.
+        /// As this is intended for use in infrequently executed code, no caching of the assembly definition is performed.
+        /// </summary>
+        /// <param name="assemblyPath">
+        /// The assembly path.
+        /// </param>
+        /// <param name="attributeFullName">
+        /// The full name of the CLR type to be located and examined.
+        /// </param>
+        /// <param name="namedProperty">
+        /// The named property.
+        /// </param>
+        /// <typeparam name="TValue">
+        /// The type of the argument to be returned.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="TValue"/>.
+        /// </returns>
+        public static TValue GetAssemblyAttributePropertyValue<TValue>(
+            string assemblyPath, 
+            string attributeFullName,
+            string namedProperty)
+        {
             var defined = AssemblyDefinition.ReadAssembly(assemblyPath);
             var attribute =
-                defined.CustomAttributes.SingleOrDefault(ca => ca.AttributeType.FullName == typeof(TAttribute).FullName);
+                defined.CustomAttributes.SingleOrDefault(ca => ca.AttributeType.FullName == attributeFullName);
             if (attribute == null)
             {
                 return default(TValue);
@@ -75,6 +104,7 @@ namespace Apprenda.Integrations.Inspection
             }
 
             return (TValue)arguments[0].Argument.Value;
+            
         }
 
         /// <summary>

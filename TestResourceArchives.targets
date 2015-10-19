@@ -4,6 +4,8 @@
     <ParameterGroup>
       <ZipFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
       <OutputFileName ParameterType="System.String" Required="true" />
+      <PrefixPath ParameterType="System.String" Required="False"/>
+      <DiscardPath ParameterType="System.String" Required="False"/>
     </ParameterGroup>
     <Task>
       <Reference Include="System.IO.Compression" />
@@ -13,8 +15,21 @@
       <Code Type="Fragment" Language="cs">
         <![CDATA[
         try {
-          Func<string,string> normalize = path => Path.GetFullPath(path).Replace(Path.GetFullPath(".")+@"\", string.Empty);
-          Log.LogMessage("Packaging Bootstrap Policy to " + OutputFileName + ".");
+          if (PrefixPath == null)
+          { 
+            PrefixPath = string.Empty; 
+          } else {
+            PrefixPath = PrefixPath 
+              + ((string.IsNullOrEmpty(PrefixPath) || PrefixPath.EndsWith(@"\")) ? string.Empty : @"\");
+          }
+          Func<string,string> normalize = path => {
+            if (!string.IsNullOrEmpty(DiscardPath))
+            {
+              path = path.Replace(DiscardPath, string.Empty); 
+            }
+            return Path.GetFullPath(path).Replace(Path.GetFullPath(".")+@"\", PrefixPath);
+          };
+          Log.LogMessage("Packaging Workload to " + OutputFileName + " with PrefixPath [" + PrefixPath  + "] and DiscardPath [" + DiscardPath + "].");
           using (var memoryStream = new MemoryStream())
           {
             using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
@@ -58,19 +73,19 @@
       <ZipFiles Include="@(Content)"/>
       <ZipFiles Include="@(WebArchiveLink)"/>
     </ItemGroup>
-    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" />
+    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" PrefixPath="interfaces\root\" />
   </Target>
 
   <Target Name="CopyServiceTestResources">
     <PropertyGroup>
       <ZipFilePath>$(TestResourcesPath)$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
-    <Message Text="Zipping UI Test Resource to $(TestResourcesPath)"/>
+    <Message Text="Zipping Service Test Resource to $(TestResourcesPath)"/>
     <ItemGroup>
       <ZipFiles Include="@(Content)"/>
-      <ZipFiles Include="@(PackArchive)"/>
+      <ZipFiles Include="@(PackArchive)" />
     </ItemGroup>
     <Message Text="Processing %(ZipFiles.Identity)" />
-    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" />
+    <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" PrefixPath="services\service\" DiscardPath="$(OutDir)"/>
   </Target>
 </Project>

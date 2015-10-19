@@ -15,7 +15,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
     {
         public AspFx4WorkloadTests()
         {
-            base.UseAssemblyArchiveStream(ResourceNames.AspFx4WithConfigSectionHandlerExplicit);
+            UseAssemblyArchiveStream(ResourceNames.AspFx4WithConfigSectionHandlerExplicit);
         }
 
         [Fact]
