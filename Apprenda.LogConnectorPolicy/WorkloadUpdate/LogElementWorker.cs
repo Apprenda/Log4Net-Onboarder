@@ -68,7 +68,7 @@ namespace Apprenda.Log4NetConnectorPolicy
                     new XElement(
                         "appender", 
                         new XAttribute("name", "ApprendaAppender"), 
-                        new XAttribute("type", "log4net.Apprenda.ApprendaBufferingAppender, log4net.Apprenda")));
+                        new XAttribute("type", "log4net.Apprenda.ApprendaAppender, log4net.Apprenda")));
                 rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "ApprendaAppender")));
             }
             else
