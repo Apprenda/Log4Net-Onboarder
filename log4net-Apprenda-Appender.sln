@@ -3,26 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Apprenda", "log4net.Apprenda\log4net.Apprenda.csproj", "{13066117-A30B-4070-A466-5222CCFEE449}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Apprenda", "src\Payload\log4net.Apprenda\log4net.Apprenda.csproj", "{13066117-A30B-4070-A466-5222CCFEE449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Log4NetConnectorPolicy", "Apprenda.LogConnectorPolicy\Apprenda.Log4NetConnectorPolicy.csproj", "{F161B096-F642-4ACE-AABD-9B7B7EE62528}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Log4NetConnectorPolicy", "src\Apprenda.Log4NetConnectorPolicy\Apprenda.Log4NetConnectorPolicy.csproj", "{F161B096-F642-4ACE-AABD-9B7B7EE62528}"
 	ProjectSection(ProjectDependencies) = postProject
 		{13066117-A30B-4070-A466-5222CCFEE449} = {13066117-A30B-4070-A466-5222CCFEE449}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-log4net-workload-assy-attribute", "aspnet-log4net-workload-assy-attribute\aspnet-log4net-workload-assy-attribute.csproj", "{F897DACF-C7E8-4E10-B278-14FBFFF67D65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-log4net-workload-assy-attribute", "src\TestWorkloads\aspnet-log4net-workload-assy-attribute\aspnet-log4net-workload-assy-attribute.csproj", "{F897DACF-C7E8-4E10-B278-14FBFFF67D65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "assembly-probe.test", "assembly-probe.test\assembly-probe.test.csproj", "{35C36A3C-3F8C-48DB-BC48-1983C6B12815}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "assembly-probe.test", "src\Tests\assembly-probe.test\assembly-probe.test.csproj", "{35C36A3C-3F8C-48DB-BC48-1983C6B12815}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0076C311-9966-4530-AEC9-739E40FEEAD0} = {0076C311-9966-4530-AEC9-739E40FEEAD0}
 		{F897DACF-C7E8-4E10-B278-14FBFFF67D65} = {F897DACF-C7E8-4E10-B278-14FBFFF67D65}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Integrations.Inspection", "Apprenda.Integrations.Inspection\Apprenda.Integrations.Inspection.csproj", "{9948C1F4-AF5D-4CC0-883C-E6B58A448100}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Integrations.Inspection", "src\Apprenda.Integrations.Inspection\Apprenda.Integrations.Inspection.csproj", "{9948C1F4-AF5D-4CC0-883C-E6B58A448100}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-log4net-workload-no-assy-attribute", "aspnet-log4net-workload-no-assy-attribute\aspnet-log4net-workload-no-assy-attribute.csproj", "{0076C311-9966-4530-AEC9-739E40FEEAD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-log4net-workload-no-assy-attribute", "src\TestWorkloads\aspnet-log4net-workload-no-assy-attribute\aspnet-log4net-workload-no-assy-attribute.csproj", "{0076C311-9966-4530-AEC9-739E40FEEAD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Log4NetConnectorPolicy.Tests", "Apprenda.Log4NetConnectorPolicy.Tests\Apprenda.Log4NetConnectorPolicy.Tests.csproj", "{25DA9CCC-63CC-4A4F-A41B-EA01494EECE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Log4NetConnectorPolicy.Tests", "src\Tests\Apprenda.Log4NetConnectorPolicy.Tests\Apprenda.Log4NetConnectorPolicy.Tests.csproj", "{25DA9CCC-63CC-4A4F-A41B-EA01494EECE2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0076C311-9966-4530-AEC9-739E40FEEAD0} = {0076C311-9966-4530-AEC9-739E40FEEAD0}
 		{13066117-A30B-4070-A466-5222CCFEE449} = {13066117-A30B-4070-A466-5222CCFEE449}
@@ -31,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprenda.Log4NetConnectorPo
 		{F897DACF-C7E8-4E10-B278-14FBFFF67D65} = {F897DACF-C7E8-4E10-B278-14FBFFF67D65}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet_webconfig_netfx4", "aspnet-webconfig-netfx4\aspnet_webconfig_netfx4.csproj", "{F265DAA2-D3B7-4F77-B881-D6BABEE56731}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet_webconfig_netfx4", "src\TestWorkloads\aspnet-webconfig-netfx4\aspnet_webconfig_netfx4.csproj", "{F265DAA2-D3B7-4F77-B881-D6BABEE56731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-webconfig-log4netconfighandler", "aspnet-webconfig-log4netconfighandler\aspnet-webconfig-log4netconfighandler.csproj", "{28ADA196-8507-4329-A178-07104D6F9CFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-webconfig-log4netconfighandler", "src\TestWorkloads\aspnet-webconfig-log4netconfighandler\aspnet-webconfig-log4netconfighandler.csproj", "{28ADA196-8507-4329-A178-07104D6F9CFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestWorkloads", "TestWorkloads", "{BD48C95C-07D3-4000-8A1A-97531160B4D7}"
 EndProject
@@ -45,19 +45,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TestResourceArchives.targets = TestResourceArchives.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSupport.CustomAttributes", "CustomAttributeTestTarget\TestSupport.CustomAttributes.csproj", "{25513161-5220-42D0-951E-1E5514C776A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSupport.CustomAttributes", "src\Tests\CustomAttributeTestTarget\TestSupport.CustomAttributes.csproj", "{25513161-5220-42D0-951E-1E5514C776A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet-NoLogging", "AspNet-NoLogging\AspNet-NoLogging.csproj", "{02A469CA-51BD-4555-99EB-93D290566399}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet-NoLogging", "src\TestWorkloads\AspNet-NoLogging\AspNet-NoLogging.csproj", "{02A469CA-51BD-4555-99EB-93D290566399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-AppConfig-Attribute", "Wcf-AppConfig-Attribute\Wcf-AppConfig-Attribute.csproj", "{79989333-B34F-49D5-A388-DE77F628459C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-AppConfig-Attribute", "src\TestWorkloads\Wcf-AppConfig-Attribute\Wcf-AppConfig-Attribute.csproj", "{79989333-B34F-49D5-A388-DE77F628459C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-AppConfig-Explicit", "Wcf-AppConfig-Explicit\Wcf-AppConfig-Explicit.csproj", "{ED7585D7-BAA9-424B-86DD-8CF1B5D6CB74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-AppConfig-Explicit", "src\TestWorkloads\Wcf-AppConfig-Explicit\Wcf-AppConfig-Explicit.csproj", "{ED7585D7-BAA9-424B-86DD-8CF1B5D6CB74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-Standalone-Attribute", "Wcf-Standalone-Attribute\Wcf-Standalone-Attribute.csproj", "{B3DDDB1C-083B-4B33-AA2B-96E1404E4497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-Standalone-Attribute", "src\TestWorkloads\Wcf-Standalone-Attribute\Wcf-Standalone-Attribute.csproj", "{B3DDDB1C-083B-4B33-AA2B-96E1404E4497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-Standalone-Explicit", "Wcf-Standalone-Explicit\Wcf-Standalone-Explicit.csproj", "{D3D8445A-2829-4A31-B189-49D44E240169}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-Standalone-Explicit", "src\TestWorkloads\Wcf-Standalone-Explicit\Wcf-Standalone-Explicit.csproj", "{D3D8445A-2829-4A31-B189-49D44E240169}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-config-attribute", "aspnet-config-attribute\aspnet-config-attribute.csproj", "{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-config-attribute", "src\TestWorkloads\aspnet-config-attribute\aspnet-config-attribute.csproj", "{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payload", "Payload", "{05CD3E3F-B642-45A5-80AC-98E4C9CB7FA4}"
 EndProject

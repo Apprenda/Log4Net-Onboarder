@@ -62,7 +62,7 @@
     </Task>
   </UsingTask>
   <PropertyGroup>
-    <TestResourcesPath>$(SolutionDir)\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>
+    <TestResourcesPath>$(SolutionDir)src\Tests\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestResourcesPath>
   </PropertyGroup>
   <Target Name="CopyUiTestResources">
     <PropertyGroup>
