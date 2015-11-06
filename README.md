@@ -1,8 +1,8 @@
 # Description #
 
-The Apprenda log4net Onboarder is a generic solution that will allow any .NET guest application that uses log4net to maintain its usage of the log4net framework while leveraging Apprenda’s centralized logging services to log messages to the Developer Portal.  
+The Apprenda log4net Onboarder is a generic solution that will allow any .NET guest application that uses log4net to maintain its usage of the log4net framework, while leveraging Apprenda’s centralized logging services to log messages to the Developer Portal.  
 
-The Onboarder bundles a log4net Appender implementation for the Apprenda Platform 6.0.x Logging API and leverages the Platform’s Custom Bootstrap Policy functionality to detect usage of log4net in .NET UI and WCF service components. If log4net usage is detected, the Apprenda log4net Appender will be copied into the workload at deploy time and any existing log4net configuration will be augmented to use the Appender, setting the default logging level to DEBUG to allow the cloud platform log overrides to govern message traffic flowing from the Appender to the Logging API.  
+The Onboarder bundles a log4net Appender implementation for the Apprenda Platform 6.0.x Logging API, and leverages the Platform’s Custom Bootstrap Policy functionality to detect usage of log4net in .NET UI and WCF service components. If usage is detected, the Apprenda log4net Appender will be copied into the workload at deploy time and any existing log4net configuration will be augmented to use the Appender. This will set the default logging level to DEBUG to allow the cloud platform log overrides to govern message traffic flowing from the Appender to the Logging API.  
 
 It should be noted that the Appender will be bootstrapped only for .NET UI and WCF service workloads, and will not apply to Windows Services workloads. 
 
