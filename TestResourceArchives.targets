@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TestArchiveResourcesPath>$(SolutionDir)src\Tests\Apprenda.Log4NetConnectorPolicy.Tests\Resources\</TestArchiveResourcesPath>
   </PropertyGroup>
-  <Target Name="CopyUiTestResources">
+  <Target Name="CopyUiTestResource" DependsOnTargets="BuildUiTestResource">
     <PropertyGroup>
       <ZipFilePath>$(TestArchiveResourcesPath)$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
@@ -16,7 +16,7 @@
     <Zip ZipFiles="@(ZipFiles)" OutputFileName="$(ZipFilePath)" PrefixPath="$(PrefixPath)" />
   </Target>
 
-  <Target Name="CopyServiceTestResources">
+  <Target Name="CopyServiceTestResource" DependsOnTargets="BuildServiceTestResource">
     <PropertyGroup>
       <ZipFilePath>$(TestArchiveResourcesPath)$(ZipFileName)</ZipFilePath>
     </PropertyGroup>
@@ -39,7 +39,6 @@
     <PropertyGroup>
       <PrefixPath Condition=" '$(PrefixPath)' == '' ">services\service\</PrefixPath>
     </PropertyGroup>
-    <CallTarget Targets="CopyServiceTestResources" />
   </Target>
   <Target Name="BuildUiTestResource">
     <ItemGroup>
@@ -50,7 +49,6 @@
     <PropertyGroup>
       <PrefixPath Condition=" '$(PrefixPath)' == '' ">interfaces\root\</PrefixPath>
     </PropertyGroup>
-    <CallTarget Targets="CopyUiTestResources"/>
   </Target>
   <Target Name="CleanTestArchiveResource">
     <PropertyGroup>

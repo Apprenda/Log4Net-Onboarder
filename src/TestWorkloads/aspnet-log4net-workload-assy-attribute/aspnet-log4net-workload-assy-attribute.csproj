@@ -280,7 +280,7 @@
     <BuildDependsOn>
       CleanTestArchiveResource;
       $(BuildDependsOn);
-      BuildUiTestResource;
+      CopyUiTestResource;
     </BuildDependsOn>
   </PropertyGroup>
 </Project>

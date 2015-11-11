@@ -100,7 +100,7 @@
       CleanTestArchiveResource;
       $(BuildDependsOn);
       CopyTestResource;
-      BuildUiTestResource;
+      CopyUiTestResource;
     </BuildDependsOn>
     <TestResourceName>$(SolutionDir)\src\Tests\assembly-probe.test\Resources\$(TargetFilename)</TestResourceName>
   </PropertyGroup>

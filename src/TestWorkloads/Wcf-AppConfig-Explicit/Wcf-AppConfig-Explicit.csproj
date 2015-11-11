@@ -79,7 +79,7 @@
     <BuildDependsOn>
       CleanTestArchiveResource;
       $(BuildDependsOn);
-      BuildServiceTestResource;
+      CopyServiceTestResource;
     </BuildDependsOn>
     <CleanDependsOn>
       CleanTestArchiveResource;      
