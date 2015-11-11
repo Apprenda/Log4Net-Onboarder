@@ -71,13 +71,28 @@
     <EmbeddedResource Include="Resources\log4net.Apprenda.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\BootstrapPolicyCreator.targets" />
-  <Target Name="BeforeBuild">
+  <Import Project="$(SolutionDir)\BootstrapPolicyCreator.tasks" />
+  <!--<Target Name="BeforeBuild">
+  </Target>-->
+  <PropertyGroup>
+    <CleanDependsOn>
+      CleanBspArchive;
+      $(CleanDependsOn);
+    </CleanDependsOn>
+    <BootstrapArchiveName>$(SolutionDir)\Apprenda.Log4Net.BSP.zip</BootstrapArchiveName>
+    <BuildDependsOn>
+      CleanBspArchive;
+      $(BuildDependsOn);
+      BuildBspArchive;
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="CleanBspArchive">
+    <Delete Files="$(BootstrapArchiveName)"/>
   </Target>
-  <ItemGroup>
-    <BspFiles Include="$(TargetDir)*.dll" Exclude="" />
-  </ItemGroup>
-  <Target Name="AfterBuild">
-    <CreateBsp BspFiles="@(BspFiles)" OutputFileName="$(SolutionDir)\Apprenda.Log4Net.BSP.zip" />
+  <Target Name="BuildBspArchive">
+    <ItemGroup>
+      <BspFiles Include="$(TargetDir)*.dll" Exclude="" />
+    </ItemGroup>
+    <CreateBsp BspFiles="@(BspFiles)" OutputFileName="$(BootstrapArchiveName)" />
   </Target>
 </Project>

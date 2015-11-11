@@ -53,14 +53,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
+  </ItemGroup>  
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <CleanDependsOn>
+      CleanPayload;
+      $(CleanDependsOn);
+    </CleanDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <BuildDependsOn>
+      CleanPayload;
+      $(BuildDependsOn);
+      CopyPayload;
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="CleanPayload">
+    <Delete Files="$(SolutionDir)\src\Apprenda.Log4NetConnectorPolicy\Resources\$(TargetFileNam)" />    
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   -->
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)\src\Apprenda.LogConnectorPolicy\Resources" />
+  <Target Name="CopyPayload">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)\src\Apprenda.Log4NetConnectorPolicy\Resources" />
   </Target>
 </Project>

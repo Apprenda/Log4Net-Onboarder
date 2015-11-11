@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="Zip" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <ZipFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <OutputFileName ParameterType="System.String" Required="true" />
+      <PrefixPath ParameterType="System.String" Required="False"/>
+      <DiscardPath ParameterType="System.String" Required="False"/>
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression" />
+      <Reference Include="System.IO.Compression.FileSystem"/>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.IO.Compression" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        try {
+          if (PrefixPath == null)
+          { 
+            PrefixPath = string.Empty; 
+          } else {
+            PrefixPath = PrefixPath 
+              + ((string.IsNullOrEmpty(PrefixPath) || PrefixPath.EndsWith(@"\")) ? string.Empty : @"\");
+          }
+          Func<string,string> normalize = path => {
+            if (!string.IsNullOrEmpty(DiscardPath))
+            {
+              path = path.Replace(DiscardPath, string.Empty); 
+            }
+            return Path.GetFullPath(path).Replace(Path.GetFullPath(".")+@"\", PrefixPath);
+          };
+          Log.LogMessage("Packaging Workload to " + OutputFileName + " with PrefixPath [" + PrefixPath  + "] and DiscardPath [" + DiscardPath + "].");
+          using (var memoryStream = new MemoryStream())
+          {
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach(var item in ZipFiles)
+                {
+                  var itemPath = item.ItemSpec;
+                  if (File.Exists(itemPath)){
+                    Log.LogMessage("... adding " + itemPath + " as " + normalize(itemPath) + ".");
+                    var entry = archive.CreateEntryFromFile(itemPath, normalize(itemPath));
+                  } else {
+                    Log.LogError("Could not find {0}.", itemPath);
+                  }
+                }                
+            }
+            using (var outStream = File.Open(OutputFileName, FileMode.Create))
+            {
+              memoryStream.Seek(0, SeekOrigin.Begin);
+              memoryStream.CopyTo(outStream);
+            }
+          }
+          return true;
+        }
+        catch (Exception ex) {
+          Log.LogErrorFromException(ex);
+          return false;
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  </Project>

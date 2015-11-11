@@ -94,16 +94,14 @@
   </ProjectExtensions>
   <!-- Start Zip target -->
   <Import Project="$(SolutionDir)TestResourceArchives.targets" />
-  <ItemGroup>
-    <WebArchiveLink Include=".\bin\*.dll" />
-    <WebArchiveLink Include=".\bin\*.exe" />
-    <WebArchiveLink Include=".\bin\*.exe.config" />
-  </ItemGroup>
   <PropertyGroup>
     <ZipFileName>aspnet-nologging.zip</ZipFileName>
-    <PrefixPath>interfaces\root\</PrefixPath>
+    <BuildDependsOn>
+      CleanTestArchiveResource;
+      $(BuildDependsOn);
+      CopyTestResource;
+      BuildUiTestResource;
+    </BuildDependsOn>
+    <TestResourceName>$(SolutionDir)\src\Tests\assembly-probe.test\Resources\$(TargetFilename)</TestResourceName>
   </PropertyGroup>
-  <Target Name="AfterBuild">
-    <CallTarget Targets="CopyUiTestResources" />
-  </Target>
 </Project>
