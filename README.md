@@ -11,7 +11,7 @@ Visual Studio 2013 and the Apprenda Platform SDK available from http://docs.appr
 
 # Installation #
 
-##Building##
+## Building ##
 The solution may be built from the command line using 
 
     msbuild /m /p:Configuration=Release /p:Platform="Any CPU"
@@ -19,10 +19,10 @@ The solution may be built from the command line using
 Or by building the solution in Visual Studio. In either case, the Bootstrap Policy archive will be created at the root of the repository, **Apprenda.LOG4Net.BSP.zip**.
 
 
-##Create the log4net Appender Bootstrap Policy##
+## Create the log4net Appender Bootstrap Policy ##
 The following Bootstrap Policy must be created in the Configuration>Application Bootstrap Policies section of the SOC.   
 
-###Working Directory Bootstrap Policy###
+### Working Directory Bootstrap Policy ###
 
 |General Settings	|Value |
 |-------------------|------|
