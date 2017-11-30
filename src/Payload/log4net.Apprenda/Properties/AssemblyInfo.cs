@@ -27,11 +27,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("log4net.Apprenda")]
-[assembly: AssemblyDescription("Apprenda SDK Logging Appender")]
+[assembly: AssemblyDescription("Apprenda Cloud Platform Logging Service Appender")]
 [assembly: AssemblyConfiguration("retail")]
 [assembly: AssemblyCompany("Apprenda, Inc.")]
 [assembly: AssemblyProduct("log4net.Apprenda")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
 [assembly: AssemblyTrademark("Apprenda, Inc.")]
 [assembly: AssemblyCulture("en-us")]
 
@@ -51,5 +51,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2.0.8.0")]
+[assembly: AssemblyFileVersion("2.0.8.0")]
