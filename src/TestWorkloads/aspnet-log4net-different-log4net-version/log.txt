@@ -1,0 +1,5 @@
+2015-09-24 10:47:50,527 [1] WARN  aspnet_log4net_workload_assy_attribute.MvcApplication Starting sample workload marked with XmlConfigurator attribute. (At WARN)
+2015-09-24 10:47:50,534 [1] INFO  aspnet_log4net_workload_assy_attribute.MvcApplication Sample log at INFO.
+2015-09-24 10:47:50,534 [1] DEBUG aspnet_log4net_workload_assy_attribute.MvcApplication Sample log at DEBUG
+2015-09-24 10:47:50,534 [1] ERROR aspnet_log4net_workload_assy_attribute.MvcApplication Sample log at ERROR
+2015-09-24 10:47:50,534 [1] FATAL aspnet_log4net_workload_assy_attribute.MvcApplication Sample log at FATAL

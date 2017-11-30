@@ -13,6 +13,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         public const string AspWithConfigSectionAttribute = "Resources.aspnet-config-attribute.zip";
         public const string AspWithStandaloneAttribute = "Resources.aspnet-log4net-attribute-standalone.zip";
         public const string WcfWithConfigSectionExplicit = "Resources.wcf-appconfig-explicit.zip";
+        public const string WcfWithConfigSectionExplicitUpdated = "Resources.wcf-appconfig-explicit-l4n208.zip";
         public const string WcfWithStandaloneExplicit = "Resources.wcf-standalone-explicit.zip";
         public const string WcfWithConfigSectionAttribute = "Resources.wcf-appconfig-attribute.zip";
         public const string WcfWithStandaloneAttribute = "Resources.wcf-standalone-attribute.zip";

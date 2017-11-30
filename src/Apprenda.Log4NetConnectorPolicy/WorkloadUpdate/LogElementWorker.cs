@@ -61,7 +61,7 @@ namespace Apprenda.Log4NetConnectorPolicy
             }
 
             var apprendaAppender =
-                loggingElement.XPathSelectElement("//appender[@type='log4net.ApprendaBufferingAppender']");
+                loggingElement.XPathSelectElement("//appender[@type='log4net.ApprendaAppender']");
             if (apprendaAppender == null)
             {
                 loggingElement.Add(

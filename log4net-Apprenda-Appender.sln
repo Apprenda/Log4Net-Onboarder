@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Apprenda", "src\Payload\log4net.Apprenda\log4net.Apprenda.csproj", "{13066117-A30B-4070-A466-5222CCFEE449}"
 EndProject
@@ -60,6 +60,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnet-config-attribute", "src\TestWorkloads\aspnet-config-attribute\aspnet-config-attribute.csproj", "{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payload", "Payload", "{05CD3E3F-B642-45A5-80AC-98E4C9CB7FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wcf-AppConfig-Explicit-DIfferentVersion", "src\TestWorkloads\Wcf-AppConfig-Explicit-DifferentVersion\Wcf-AppConfig-Explicit-DIfferentVersion.csproj", "{9756B967-31DA-44AF-BEA5-F83649F58A00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,10 @@ Global
 		{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A0A3C6F-1F76-486F-B083-CCE6F2E82847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9756B967-31DA-44AF-BEA5-F83649F58A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9756B967-31DA-44AF-BEA5-F83649F58A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9756B967-31DA-44AF-BEA5-F83649F58A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9756B967-31DA-44AF-BEA5-F83649F58A00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,5 +156,9 @@ Global
 		{B3DDDB1C-083B-4B33-AA2B-96E1404E4497} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}
 		{D3D8445A-2829-4A31-B189-49D44E240169} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}
 		{9A0A3C6F-1F76-486F-B083-CCE6F2E82847} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}
+		{9756B967-31DA-44AF-BEA5-F83649F58A00} = {BD48C95C-07D3-4000-8A1A-97531160B4D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A74FCB3-667B-4A78-BB4E-36C7E0748B02}
 	EndGlobalSection
 EndGlobal

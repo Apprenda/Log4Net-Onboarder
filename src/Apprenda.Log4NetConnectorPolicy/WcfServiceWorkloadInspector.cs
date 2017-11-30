@@ -106,7 +106,7 @@ namespace Apprenda.Log4NetConnectorPolicy
                         }
 
                         var configExtension = GetXmlConfiguratorProperty(filePath, "ConfigFileExtension") ?? "config";
-                        return filePath + (configExtension.StartsWith(".") ? "." : string.Empty) + configExtension;
+                        return filePath + (configExtension.StartsWith(".") ? string.Empty : ".") + configExtension;
                     });
 
             var messages =

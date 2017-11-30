@@ -88,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Harness\ResourceNames.cs" />
     <Compile Include="SupportTests\SupportResourcesArePresentTests.cs" />
+    <Compile Include="WorkloadTests\Class1.cs" />
     <Compile Include="WorkloadTests\InvalidWorkloadTests.cs" />
     <Compile Include="WorkloadTests\WcfWithStandaloneAttributeWorkloadTests.cs" />
     <Compile Include="Harness\ZipFileLocator.cs" />
@@ -105,6 +106,7 @@
     <EmbeddedResource Include="Resources\wcf-standalone-attribute.zip" />
     <EmbeddedResource Include="Resources\wcf-standalone-explicit.zip" />
     <EmbeddedResource Include="Resources\aspnet-config-attribute.zip" />
+    <EmbeddedResource Include="Resources\wcf-appconfig-explicit-l4n208.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\Apprenda.Integrations.Inspection\Apprenda.Integrations.Inspection.csproj">

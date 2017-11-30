@@ -46,7 +46,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         <level value='DEBUG'/>
         <appender-ref ref='ApprendaAppender'/>
     </root>
-    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaBufferingAppender, log4net.Apprenda'/>
+    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaAppender, log4net.Apprenda'/>
 </log4net>").ToString());
         }
 
@@ -71,7 +71,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
 <appender-ref ref='ApprendaAppender' />
 </root>
 <appender name='FileLog' type='RollingFileAppender' />
-    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaBufferingAppender, log4net.Apprenda'/>
+    <appender name='ApprendaAppender' type='log4net.Apprenda.ApprendaAppender, log4net.Apprenda'/>
 </log4net>").ToString());
         }
     }
