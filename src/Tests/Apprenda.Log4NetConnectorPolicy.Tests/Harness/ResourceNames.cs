@@ -17,7 +17,6 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
         public const string WcfWithStandaloneExplicit = "Resources.wcf-standalone-explicit.zip";
         public const string WcfWithConfigSectionAttribute = "Resources.wcf-appconfig-attribute.zip";
         public const string WcfWithStandaloneAttribute = "Resources.wcf-standalone-attribute.zip";
-        public const string AspFx4WithConfigSectionHandlerExplicit = "Resources.aspnet-config-sectionhandler-netfx4.zip";
         public const string AspWithoutLog4Net = "Resources.aspnet-nologging.zip";
     }
 }

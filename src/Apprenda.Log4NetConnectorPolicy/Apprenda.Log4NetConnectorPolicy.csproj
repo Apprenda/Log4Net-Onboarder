@@ -53,6 +53,9 @@
     <Compile Include="BootstrappingResultExtension.cs" />
     <Compile Include="DotNetLog4NetConnector.cs" />
     <Compile Include="WorkloadInspectorBase.cs" />
+    <Compile Include="WorkloadUpdate\BindingRedirectSettings.cs" />
+    <Compile Include="WorkloadUpdate\ConfigBindingRedirectUpdateService.cs" />
+    <Compile Include="WorkloadUpdate\ConfigRuntimeBindingRedirectWorker.cs" />
     <Compile Include="WorkloadUpdate\Log4NetAppConfigUpdateService.cs" />
     <Compile Include="WorkloadUpdate\Log4NetConfigurationUpdateService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

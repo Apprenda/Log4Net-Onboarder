@@ -81,8 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WorkerTests\RuntimeElementWorkerTests.cs" />
     <Compile Include="WorkloadTests\AbstractBootstrapPolicyTestFixture.cs" />
-    <Compile Include="WorkloadTests\AspFx4WorkloadTests.cs" />
     <Compile Include="Harness\BootstrappingResultExtensions.cs" />
     <Compile Include="WorkerTests\LogElementWorkerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,7 +98,6 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\aspnet-log4net-attribute-standalone.zip" />
     <EmbeddedResource Include="Resources\aspnet-log4net-explicit-standalone.zip" />
-    <EmbeddedResource Include="Resources\aspnet-config-sectionhandler-netfx4.zip" />
     <EmbeddedResource Include="Resources\aspnet-config-sectionhandler.zip" />
     <EmbeddedResource Include="Resources\aspnet-nologging.zip" />
     <EmbeddedResource Include="Resources\wcf-appconfig-attribute.zip" />
