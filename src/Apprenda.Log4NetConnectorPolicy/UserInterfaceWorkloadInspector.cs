@@ -23,6 +23,10 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using Apprenda.Log4NetConnectorPolicy.WorkloadUpdate;
+
 namespace Apprenda.Log4NetConnectorPolicy
 {
     using System.IO;
@@ -95,7 +99,8 @@ namespace Apprenda.Log4NetConnectorPolicy
             var binaryPath = Path.Combine(uiPath, "bin");
             var appenderPath = Path.Combine(binaryPath, "log4net.Apprenda.dll");
 
-            if (!File.Exists(Path.Combine(binaryPath, "log4net.dll")))
+            var loggingAssemblyPath = Path.Combine(binaryPath, "log4net.dll");
+            if (!File.Exists(loggingAssemblyPath))
             {
                 // if log4net is not present in the component, this bootstrapper succeeds by not modifying the workload.
                 return BootstrappingResult.Success();
@@ -126,7 +131,24 @@ namespace Apprenda.Log4NetConnectorPolicy
                 }
             }
 
+            var appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
+            var appenderDepedencyPublicKey =
+                AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
+            var oldVersion = appenderDependencyVersion.ToString();
+
             var potentialAssemblies = Directory.EnumerateFiles(binaryPath, "*.dll").Except(new[] { appenderPath }).ToList();
+
+            var projected = potentialAssemblies
+                .Select(pa => new { Path = pa, DepVersion = AssemblyExtensions.GetDependencyVersion(pa, "log4net") }).ToArray();
+
+            var filtered = projected
+                .Where(proj => proj.DepVersion > appenderDependencyVersion).ToArray();
+
+            var configFiles = filtered
+                .Select(pa => new { Path = pa.Path + ".config", pa.DepVersion })
+                .Where(pa => File.Exists(pa.Path))
+                .ToArray();
+
             var dependentAssemblies = potentialAssemblies.Where(p => AssemblyExtensions.HasDependencyOn(p, "log4net"));
 
             var configFilePaths = dependentAssemblies.Select(
@@ -146,9 +168,21 @@ namespace Apprenda.Log4NetConnectorPolicy
                 configFilePaths.SelectMany(
                     configFilePath => new Log4NetConfigurationUpdateService(configFilePath).Update());
 
-            var webConfigUpdateMessages = new Log4NetAppConfigUpdateService(Path.Combine(uiPath, "Web.config")).Update();
+            var webConfigPath = Path.Combine(uiPath, "Web.config");
 
-            return BootstrappingResultExtension.SuccessIfNoMessages(messages.Union(webConfigUpdateMessages));
+            var webConfigUpdateMessages = new Log4NetAppConfigUpdateService(webConfigPath).Update();
+
+            var webConfigRedirectmessages =
+                new ConfigBindingRedirectUpdateService(webConfigPath, new BindingRedirectSettings
+                {
+                    AssemblyName = "log4net",
+                    CorrectNamespace = true,
+                    Culture = "neutral",
+                    OldVersion = appenderDependencyVersion.ToString(),
+                    NewVersion = configFiles.Union(new [] {new { Path = string.Empty, DepVersion = appenderDependencyVersion}}).Max(cf => cf.DepVersion).ToString()
+                }).Update();
+
+            return BootstrappingResultExtension.SuccessIfNoMessages(messages.Union(webConfigUpdateMessages).Union(webConfigRedirectmessages));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -10,6 +11,8 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
 {
     public static class ConfigRuntimeBindingRedirectWorker
     {
+        const string AssemblyNamespace = "urn:schemas-microsoft-com:asm.v1";
+
         public static void ModifyConfigurationElement(XElement configuration, BindingRedirectSettings _settings, ICollection<string> messageAccumulator)
         {
             if (_settings.OldVersion == _settings.NewVersion)
@@ -20,23 +23,17 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
             var runtimeElement = GetOrCreateRuntimeElement(configuration);
 
             var assemblyBindingElement = GetOrCreateAssemblyBindngElement(runtimeElement, _settings, messageAccumulator);
-            
-            var identityTarget =
-                string.Format(
-                    "//dependentAssembly[assemblyIdentity/@name='{0}' and @publicKeyToken='{1}'  and culture='{2}']",
-                    _settings.AssemblyName,
-                    _settings.PublicKeyToken,
-                    _settings.Culture);
 
-            var redirectsMatchingLibrary = assemblyBindingElement.XPathSelectElements(identityTarget).ToArray();
+            var redirectsMatchingLibrary = assemblyBindingElement.Elements(GetQualifiedName("dependentAssembly"))
+                .Where(da => da.Elements(GetQualifiedName("assemblyIdentity"))
+                    .Any(ai => AssemblyIdMatchesSettings(ai, _settings))).ToArray();
 
-            var modifiedElements = 0;
+            var shouldAddRedirect = true;
             if (redirectsMatchingLibrary.Any())
             {
                 foreach (var dependentAssembly in redirectsMatchingLibrary)
                 {
-                    var hasModification = false;
-                    var assemblyIdentity = dependentAssembly.XPathSelectElement("/assemblyIdentity");
+                    var assemblyIdentity = dependentAssembly.Element(GetQualifiedName("assemblyIdentity"));
                     if (assemblyIdentity == null)
                     {
                         break;
@@ -47,7 +44,7 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                         assemblyIdentity.Add(new XAttribute("publicKeyToken", _settings.PublicKeyToken));
                     }
 
-                    var bindingRedirectElement = dependentAssembly.XPathSelectElement("/bindingRedirect");
+                    var bindingRedirectElement = dependentAssembly.Element(GetQualifiedName("bindingRedirect"));
                     if (bindingRedirectElement == null)
                     {
                         break;
@@ -61,15 +58,15 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                     {
                         newVersionAttribute = new XAttribute("newVersion", _settings.NewVersion);
                         bindingRedirectElement.Add(newVersionAttribute);
-                        hasModification = true;
+                        shouldAddRedirect = false;
                     }
                     else
                     {
                         var newVersion = new Version(newVersionAttribute.Value);
-                        if (newVersion < newSettingVersion)
+                        if (newVersion <= newSettingVersion)
                         {
                             newVersionAttribute.SetValue(newSettingVersion.ToString());
-                            hasModification = true;
+                            shouldAddRedirect = false;
                         }
                     }
 
@@ -78,7 +75,7 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                     {
                         oldVersionAttribute = new XAttribute("oldVersion", _settings.OldVersion);
                         bindingRedirectElement.Add(oldVersionAttribute);
-                        hasModification = true;
+                        shouldAddRedirect = false;
                     }
                     else
                     {
@@ -108,23 +105,29 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                                 }
 
                                 oldVersionAttribute.SetValue(string.Format("{0}-{1}", minVersion, maxVersion));
-                                hasModification = true;
+                                shouldAddRedirect = false;
                             }
-
+                        }
+                        else
+                        {
+                            var elementVersion = new Version(value);
+                            if (elementVersion != settingsVersion)
+                            {
+                                var versionVector = new[] {elementVersion, settingsVersion};
+                                
+                                oldVersionAttribute.SetValue(string.Format("{0}-{1}", versionVector.Min(), versionVector.Max()));
+                            }
+                            shouldAddRedirect = false;
                         }
                     }
 
-                    if (hasModification)
-                    {
-                        modifiedElements++;
-                    }
                 }
             }
 
-            if (modifiedElements == 0)
+            if (shouldAddRedirect)
             {
-                var dependentAssembly = new XElement("dependentAssembly");
-                var assemblyIdentity = new XElement("assemblyIdentity", new XAttribute("name", _settings.AssemblyName),
+                var dependentAssembly = new XElement(GetQualifiedName("dependentAssembly"));
+                var assemblyIdentity = new XElement(GetQualifiedName("assemblyIdentity"), new XAttribute("name", _settings.AssemblyName),
                     new XAttribute("culture", _settings.Culture));
                 if (_settings.PublicKeyToken != null)
                 {
@@ -132,39 +135,41 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                 }
 
                 dependentAssembly.Add(assemblyIdentity);
-                var bindingNode = new XElement("bindingRedirect", new XAttribute("oldVersion", _settings.OldVersion),
+                var bindingNode = new XElement(GetQualifiedName("bindingRedirect"), new XAttribute("oldVersion", _settings.OldVersion),
                     new XAttribute("newVersion", _settings.NewVersion));
                 dependentAssembly.Add(bindingNode);
 
                 assemblyBindingElement.Add(dependentAssembly);
             }
         }
-
+        public static XName GetQualifiedName(string name)
+        {
+            return XName.Get(name, AssemblyNamespace);
+        }
 
         private static XElement GetOrCreateAssemblyBindngElement(XElement runtimeElement, BindingRedirectSettings _settings, ICollection<string>_messages)
         {
-            const string xmlNs = "urn:schemas-microsoft-com:asm.v1";
-            XNamespace ns = xmlNs;
+            XNamespace ns = AssemblyNamespace;
 
-            var assemblyBindingElement = runtimeElement.XPathSelectElement("/assemblyBinding");
+            var assemblyBindingElement = runtimeElement.Element(GetQualifiedName("assemblyBinding"));
             if (assemblyBindingElement == null)
             {
-                assemblyBindingElement = new XElement(ns + "assemblyBinding", new XAttribute("xmlns", xmlNs));
+                assemblyBindingElement = new XElement(GetQualifiedName("assemblyBinding"), new XAttribute("xmlns", AssemblyNamespace));
                 runtimeElement.Add(assemblyBindingElement);
             }
 
             var nsAttribute = assemblyBindingElement.Attributes("xmlns").FirstOrDefault();
             if (nsAttribute == null)
             {
-                nsAttribute = new XAttribute("xmlns", xmlNs);
+                nsAttribute = new XAttribute("xmlns", AssemblyNamespace);
                 assemblyBindingElement.Add(nsAttribute);
             }
-            else if (!nsAttribute.Value.Equals(xmlNs))
+            else if (!nsAttribute.Value.Equals(AssemblyNamespace))
             {
                 if (_settings.CorrectNamespace)
                 {
                     assemblyBindingElement.Remove();
-                    var newAssemblyBindingElement = new XElement(ns + "assemblyBinding", new XAttribute("xmlns", xmlNs));
+                    var newAssemblyBindingElement = new XElement(ns + "assemblyBinding", new XAttribute("xmlns", AssemblyNamespace));
                     newAssemblyBindingElement.Add(assemblyBindingElement.Attributes(), assemblyBindingElement.Descendants());
                     runtimeElement.Add(newAssemblyBindingElement);
                 }
@@ -176,6 +181,13 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
                 }
             }
             return assemblyBindingElement;
+        }
+
+        private static bool AssemblyIdMatchesSettings(XElement ai, BindingRedirectSettings _settings)
+        {
+                return _settings.AssemblyName.Equals(ai.Attribute("name")?.Value) &&
+                       _settings.Culture.Equals(ai.Attribute("culture")?.Value) &&
+                       _settings.PublicKeyToken.Equals(ai.Attribute("publicKeyToken")?.Value);
         }
 
         private static XElement GetOrCreateRuntimeElement(XElement parentElement)

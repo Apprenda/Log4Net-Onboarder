@@ -25,6 +25,7 @@
 //  --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Apprenda.Log4NetConnectorPolicy.WorkloadUpdate;
 using FluentAssertions;
@@ -66,20 +67,80 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
             assemblyBindingElement.Should().HaveAttribute("xmlns", "urn:schemas-microsoft-com:asm.v1");
 
             var dependElement = assemblyBindingElement.Should()
-                .HaveElement("dependentAssembly").Which;
+                .HaveElement(xns + "dependentAssembly").Which;
 
             dependElement.Should()
-                .HaveElement("bindingRedirect")
+                .HaveElement(xns + "bindingRedirect")
                 .Which.Should()
                 .HaveAttribute("oldVersion", redirectSettings.OldVersion)
                 .And.HaveAttribute("newVersion", redirectSettings.NewVersion);
 
-            dependElement.Should().HaveElement("assemblyIdentity").Which.Should()
+            dependElement.Should().HaveElement(xns + "assemblyIdentity").Which.Should()
                 .HaveAttribute("name", redirectSettings.AssemblyName)
                 .And.HaveAttribute("culture", redirectSettings.Culture)
                 .And.HaveAttribute("publicKeyToken", redirectSettings.PublicKeyToken);
 
             messages.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void WhenWorkoadHasNewerDependency_AndConfigRedirectsCapture_NoChangesFound()
+        {
+            var originalConfig = ComplexConfiguration("1.2.13.0", "2.0.8.0");
+            var target = ComplexConfiguration("1.2.13.0", "2.0.8.0");
+
+            ConfigRuntimeBindingRedirectWorker.ModifyConfigurationElement(target, UpdateRedirectSettings(), new List<string>() );
+
+            target.Should().BeEquivalentTo(originalConfig);
+        }
+
+        [Fact]
+        public void WhenWorkloadHasNewerDependency_AndConfigDoesNotCaptureVersion_OldVersionIsRewritten()
+        {
+            var configOldVersion = "1.2.13.0";
+            var originalConfig = ComplexConfiguration(configOldVersion, "2.0.8.0");
+            var target = ComplexConfiguration(configOldVersion, "2.0.8.0");
+            var updateSettings = UpdateRedirectSettings();
+            updateSettings.OldVersion = "1.2.10.0";
+            ConfigRuntimeBindingRedirectWorker.ModifyConfigurationElement(target, updateSettings, new List<string>());
+            XNamespace xns = "urn:schemas-microsoft-com:asm.v1";
+            XName assemblyEltName = xns + "assemblyBinding";
+
+            var assemblyBindingElement = target.Should().HaveElement("runtime").Which
+                .Should().HaveElement(assemblyEltName).Which;
+            assemblyBindingElement.Should().HaveAttribute("xmlns", "urn:schemas-microsoft-com:asm.v1");
+
+            var dependElement = assemblyBindingElement.Should()
+                .HaveElement(xns+"dependentAssembly").Which;
+
+            dependElement.Should()
+                .HaveElement(xns + "bindingRedirect")
+                .Which.Should()
+                .HaveAttribute("oldVersion", string.Format("{0}-{1}", updateSettings.OldVersion, configOldVersion))
+                .And.HaveAttribute("newVersion", updateSettings.NewVersion);
+
+            dependElement.Should().HaveElement(xns + "assemblyIdentity").Which.Should()
+                .HaveAttribute("name", updateSettings.AssemblyName)
+                .And.HaveAttribute("culture", updateSettings.Culture)
+                .And.HaveAttribute("publicKeyToken", updateSettings.PublicKeyToken);
+
+
+        }
+
+
+        private XElement ComplexConfiguration(string redirectPattern, string newVersion)
+        {
+            return XElement.Parse(string.Format(@"
+<configuration>
+  <runtime>
+    <assemblyBinding xmlns=""urn:schemas-microsoft-com:asm.v1"">
+      <dependentAssembly>
+        <assemblyIdentity name=""log4net"" publicKeyToken=""669e0ddf0bb1aa2a"" culture=""neutral""/>
+        <bindingRedirect oldVersion=""{0}"" newVersion=""{1}""/>
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>", redirectPattern, newVersion));
         }
 
         private BindingRedirectSettings UpdateRedirectSettings()
@@ -88,7 +149,7 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
             {
                 AssemblyName = "log4net",
                 CorrectNamespace = false,
-                OldVersion = "1.2.10.0",
+                OldVersion = "1.2.13.0",
                 NewVersion= "2.0.8.0",
                 PublicKeyToken = "669e0ddf0bb1aa2a"
             };

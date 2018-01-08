@@ -83,27 +83,29 @@ namespace Apprenda.Log4NetConnectorPolicy
 
             if (potentialAssemblies.Any())
             {
-                var assemblyStream =
-                    Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream("Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll");
-                if (assemblyStream != null)
+                using (var assemblyStream =
+                       Assembly.GetExecutingAssembly()
+                           .GetManifestResourceStream("Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll"))
                 {
-                    var appenderPath = Path.Combine(assemblyPath, "log4net.Apprenda.dll");
-                    if (!File.Exists(appenderPath))
+                    if (assemblyStream != null)
                     {
-                        using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                        var appenderPath = Path.Combine(assemblyPath, "log4net.Apprenda.dll");
+                        if (!File.Exists(appenderPath))
                         {
-                            assemblyStream.CopyTo(appenderStream );
+                            using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                            {
+                                assemblyStream.CopyTo(appenderStream);
+                            }
                         }
-                    }
 
-                    appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
-                    appenderDepedencyPublicKey =
-                        AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
-                }
-                else
-                {
-                    return BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
+                        appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
+                        appenderDepedencyPublicKey =
+                            AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
+                    }
+                    else
+                    {
+                        return BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
+                    }
                 }
                 var oldVersion = appenderDependencyVersion.ToString();
 
