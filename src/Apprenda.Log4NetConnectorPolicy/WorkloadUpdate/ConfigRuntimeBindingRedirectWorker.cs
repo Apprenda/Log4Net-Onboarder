@@ -24,9 +24,11 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
 
             var assemblyBindingElement = GetOrCreateAssemblyBindngElement(runtimeElement, _settings, messageAccumulator);
 
-            var redirectsMatchingLibrary = assemblyBindingElement.Elements(GetQualifiedName("dependentAssembly"))
-                .Where(da => da.Elements(GetQualifiedName("assemblyIdentity"))
-                    .Any(ai => AssemblyIdMatchesSettings(ai, _settings))).ToArray();
+            var elements = assemblyBindingElement.Elements(GetQualifiedName("dependentAssembly")).ToArray();
+            var redirectsMatchingLibrary = elements
+                .Where(da => 
+                    da.Elements(GetQualifiedName("assemblyIdentity"))
+                        .Any(ai => AssemblyIdMatchesSettings(ai, _settings))).ToArray();
 
             var shouldAddRedirect = true;
             if (redirectsMatchingLibrary.Any())
@@ -192,7 +194,7 @@ namespace Apprenda.Log4NetConnectorPolicy.WorkloadUpdate
 
         private static XElement GetOrCreateRuntimeElement(XElement parentElement)
         {
-            var runtimeElement = parentElement.XPathSelectElement("/runtime");
+            var runtimeElement = parentElement.XPathSelectElement("//runtime");
             if (runtimeElement == null)
             {
                 runtimeElement = new XElement("runtime");

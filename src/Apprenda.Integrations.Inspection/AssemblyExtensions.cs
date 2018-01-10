@@ -173,9 +173,9 @@ namespace Apprenda.Integrations.Inspection
                 var defined = AssemblyDefinition.ReadAssembly(probedAssembly);
 
                 var dep = defined.MainModule.AssemblyReferences
-                    .FirstOrDefault(ar => ar.Name.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase));
-
-                return dep == null ? BitConverter.ToString(dep.PublicKeyToken).Replace("-", "").ToLowerInvariant() : default(string);
+                    .First(ar => ar.Name.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase));
+                var pkt = dep.PublicKeyToken;
+                return BitConverter.ToString(pkt).Replace("-", "").ToLowerInvariant();
             }
             catch (BadImageFormatException)
             {

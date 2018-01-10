@@ -115,14 +115,14 @@ namespace Apprenda.Log4NetConnectorPolicy
                 var filtered = projected
                     .Where(proj => proj.DepVersion > appenderDependencyVersion).ToArray();
 
-                var configFiles = filtered
+                var configDetails = filtered
                     .Select(pa => new { Path = pa.Path + ".config", pa.DepVersion })
                     .Where(pa => File.Exists(pa.Path))
                     .ToArray();
 
-                var newVersion = configFiles.Max(cf => cf.DepVersion)?.ToString();
+                var newVersion = configDetails.Max(cf => cf.DepVersion)?.ToString();
 
-                foreach (var configDetail in configFiles)
+                foreach (var configDetail in configDetails)
                 {
                     var updateService = new ConfigBindingRedirectUpdateService(configDetail.Path, new BindingRedirectSettings
                     {

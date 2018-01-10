@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WcfConfigurationSample" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section
+      name="log4net"
+      type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" /&gt;
+  &lt;/configSections&gt;
+  &lt;log4net&gt;
+    &lt;appender
+      name="Console"
+      type="log4net.Appender.ConsoleAppender"&gt;
+      &lt;layout
+        type="log4net.Layout.PatternLayout"&gt;
+        &lt;conversionPattern
+          value="%5level [%thread] (%file:%line) - %message%newline" /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;appender
+      name="RollingFile"
+      type="log4net.Appender.RollingFileAppender"&gt;
+      &lt;file
+        value="example.log" /&gt;
+      &lt;appendToFile
+        value="true" /&gt;
+      &lt;maximumFileSize
+        value="100KB" /&gt;
+      &lt;maxSizeRollBackups
+        value="2" /&gt;
+      &lt;layout
+        type="log4net.Layout.PatternLayout"&gt;
+        &lt;conversionPattern
+          value="%level %thread %logger - %message%newline" /&gt;
+      &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;root&gt;
+      &lt;level
+        value="DEBUG" /&gt;
+      &lt;appender-ref
+        ref="Console" /&gt;
+      &lt;appender-ref
+        ref="RollingFile" /&gt;
+      &lt;appender-ref
+        ref="ApprendaAppender" /&gt;
+    &lt;/root&gt;
+    &lt;appender
+      name="ApprendaAppender"
+      type="log4net.Apprenda.ApprendaAppender, log4net.Apprenda" /&gt;
+  &lt;/log4net&gt;
+  &lt;appSettings&gt;
+    &lt;add
+      key="aspnet:UseTaskFriendlySynchronizationContext"
+      value="true" /&gt;
+  &lt;/appSettings&gt;
+  &lt;system.web&gt;
+    &lt;compilation
+      debug="true" /&gt;
+  &lt;/system.web&gt;
+  &lt;!-- When deploying the service library project, the content of the config file must be added to the host's 
+  app.config file. System.Configuration does not support config files for libraries. --&gt;
+  &lt;system.serviceModel&gt;
+    &lt;services&gt;
+      &lt;service
+        name="Wcf_AppConfig_Explicit.Service1"&gt;
+        &lt;host&gt;
+          &lt;baseAddresses&gt;
+            &lt;add
+              baseAddress="http://localhost:8733/Design_Time_Addresses/Wcf_AppConfig_Explicit/Service1/" /&gt;
+          &lt;/baseAddresses&gt;
+        &lt;/host&gt;
+        &lt;!-- Service Endpoints --&gt;
+        &lt;!-- Unless fully qualified, address is relative to base address supplied above --&gt;
+        &lt;endpoint
+          address=""
+          binding="basicHttpBinding"
+          contract="Wcf_AppConfig_Explicit.IService1"&gt;
+          &lt;!-- 
+              Upon deployment, the following identity element should be removed or replaced to reflect the 
+              identity under which the deployed service runs.  If removed, WCF will infer an appropriate identity 
+              automatically.
+          --&gt;
+          &lt;identity&gt;
+            &lt;dns
+              value="localhost" /&gt;
+          &lt;/identity&gt;
+        &lt;/endpoint&gt;
+        &lt;!-- Metadata Endpoints --&gt;
+        &lt;!-- The Metadata Exchange endpoint is used by the service to describe itself to clients. --&gt;
+        &lt;!-- This endpoint does not use a secure binding and should be secured or removed before deployment --&gt;
+        &lt;endpoint
+          address="mex"
+          binding="mexHttpBinding"
+          contract="IMetadataExchange" /&gt;
+      &lt;/service&gt;
+    &lt;/services&gt;
+    &lt;behaviors&gt;
+      &lt;serviceBehaviors&gt;
+        &lt;behavior&gt;
+          &lt;!-- To avoid disclosing metadata information, 
+          set the values below to false before deployment --&gt;
+          &lt;serviceMetadata
+            httpGetEnabled="True"
+            httpsGetEnabled="True" /&gt;
+          &lt;!-- To receive exception details in faults for debugging purposes, 
+          set the value below to true.  Set to false before deployment 
+          to avoid disclosing exception information --&gt;
+          &lt;serviceDebug
+            includeExceptionDetailInFaults="False" /&gt;
+        &lt;/behavior&gt;
+      &lt;/serviceBehaviors&gt;
+    &lt;/behaviors&gt;
+  &lt;/system.serviceModel&gt;
+  &lt;runtime&gt;
+    &lt;assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1"&gt;
+      &lt;dependentAssembly&gt;
+        &lt;assemblyIdentity
+          name="log4net"
+          publicKeyToken="669e0ddf0bb1aa2a"
+          culture="neutral" /&gt;
+        &lt;bindingRedirect
+          oldVersion="1.2.13.0-2.0.7.0"
+          newVersion="2.0.8.0" /&gt;
+      &lt;/dependentAssembly&gt;
+    &lt;/assemblyBinding&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;</value>
+  </data>
+</root>

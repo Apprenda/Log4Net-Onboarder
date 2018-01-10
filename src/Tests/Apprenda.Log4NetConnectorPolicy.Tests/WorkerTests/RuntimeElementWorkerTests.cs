@@ -25,6 +25,8 @@
 //  --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Apprenda.Log4NetConnectorPolicy.WorkloadUpdate;
@@ -127,6 +129,20 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
 
         }
 
+        [Fact]
+        public void WhenWcfSampleConfigProvided_ExistingBindingsAreNotModified()
+        {
+            var pristine = WcfSampleConfiguration();
+            var target = WcfSampleConfiguration();
+            var settings = UpdateRedirectSettings();
+
+            ConfigRuntimeBindingRedirectWorker.ModifyConfigurationElement(target, settings, new List<string>());
+            XNamespace xns = "urn:schemas-microsoft-com:asm.v1";
+            XName assemblyEltName = xns + "assemblyBinding";
+
+            target.ToString().Should().BeEquivalentTo(pristine.ToString());
+
+        }
 
         private XElement ComplexConfiguration(string redirectPattern, string newVersion)
         {
@@ -153,6 +169,12 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
                 NewVersion= "2.0.8.0",
                 PublicKeyToken = "669e0ddf0bb1aa2a"
             };
+        }
+
+        private XElement WcfSampleConfiguration()
+        {
+            
+            return XElement.Parse(Properties.Resources.WcfConfigurationSample);
         }
     }
 
