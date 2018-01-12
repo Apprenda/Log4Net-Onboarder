@@ -135,5 +135,69 @@ namespace Apprenda.Integrations.Inspection
                 return false;
             }
         }
+
+        /// <summary>
+        /// Extract the version of a given assembly reference of the target assembly, or default(Version) if the reference is not found.
+        /// </summary>
+        /// <param name="probedAssembly">Path to the assembly to inspect</param>
+        /// <param name="assemblyName">Name of the reference to retrieve the versionof</param>
+        /// <returns>Version representing the version metadata the referenced assembly, or null if no reference was found</returns>
+        /// <returns></returns>
+        public static Version GetDependencyVersion(string probedAssembly, string assemblyName)
+        {
+            try
+            {
+                var defined = AssemblyDefinition.ReadAssembly(probedAssembly);
+
+                return defined.MainModule.AssemblyReferences
+                    .FirstOrDefault(ar => ar.Name.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase))
+                    ?.Version;
+            }
+            catch (BadImageFormatException)
+            {
+                // an assembly we can't load is an assembly we can't version-check.
+                return default(Version);
+            }
+        }
+
+        /// <summary>
+        /// Extract the public key token of a given assembly reference of the target assembly.
+        /// </summary>
+        /// <param name="probedAssembly">Path to the assembly to inspect</param>
+        /// <param name="assemblyName">Name of the reference to retrieve the public key token of</param>
+        /// <returns>hex string representing the public key token of the referenced assembly, or null if no reference was found</returns>
+        public static string GetDependencyPublicKeyToken(string probedAssembly, string assemblyName)
+        {
+            try
+            {
+                var defined = AssemblyDefinition.ReadAssembly(probedAssembly);
+
+                var dep = defined.MainModule.AssemblyReferences
+                    .First(ar => ar.Name.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase));
+                var pkt = dep.PublicKeyToken;
+                return BitConverter.ToString(pkt).Replace("-", "").ToLowerInvariant();
+            }
+            catch (BadImageFormatException)
+            {
+                // an assembly we can't load is an assembly we can't version-check.
+                return default(string);
+            }
+        }
+
+        public static bool IsStrongNamed(string probedAssembly)
+        {
+            try
+            {
+                var defined = AssemblyDefinition.ReadAssembly(probedAssembly);
+
+                return defined.Name.HasPublicKey;
+            }
+            catch (BadImageFormatException)
+            {
+                // if we can't load it, it has no strong name...
+
+                return false;
+            }
+        }
     }
 }

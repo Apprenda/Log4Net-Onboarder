@@ -23,6 +23,11 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using Apprenda.Log4NetConnectorPolicy.WorkloadUpdate;
+
 namespace Apprenda.Log4NetConnectorPolicy
 {
     using System.IO;
@@ -61,8 +66,10 @@ namespace Apprenda.Log4NetConnectorPolicy
         /// </returns>
         public override BootstrappingResult Execute()
         {
+            var messages = new List<string>();
             var assemblyPath = this._request.ComponentPath;
-
+            Version appenderDependencyVersion;
+            string appenderDependencyPublicKey;
             if (!File.Exists(Path.Combine(assemblyPath, "log4net.dll")))
             {
                 // no log4net requires no modifications.
@@ -76,28 +83,63 @@ namespace Apprenda.Log4NetConnectorPolicy
 
             if (potentialAssemblies.Any())
             {
-                var assemblyStream =
-                    Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream("Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll");
-                if (assemblyStream != null)
+                using (var assemblyStream =
+                       Assembly.GetExecutingAssembly()
+                           .GetManifestResourceStream("Apprenda.Log4NetConnectorPolicy.Resources.log4net.Apprenda.dll"))
                 {
-                    var appenderPath = Path.Combine(assemblyPath, "log4net.Apprenda.dll");
-                    if (!File.Exists(appenderPath))
+                    if (assemblyStream != null)
                     {
-                        using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                        var appenderPath = Path.Combine(assemblyPath, "log4net.Apprenda.dll");
+                        if (!File.Exists(appenderPath))
                         {
-                            assemblyStream.CopyTo(appenderStream );
+                            using (var appenderStream = new FileStream(appenderPath, FileMode.Create))
+                            {
+                                assemblyStream.CopyTo(appenderStream);
+                            }
                         }
+
+                        appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
+                        appenderDependencyPublicKey =
+                            AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
+                    }
+                    else
+                    {
+                        return BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
                     }
                 }
-                else
+                var oldVersion = appenderDependencyVersion.ToString();
+
+                var projected = potentialAssemblies
+                    .Select(pa => new {Path = pa, DepVersion = AssemblyExtensions.GetDependencyVersion(pa, "log4net")}).ToArray();
+
+                var filtered = projected
+                    .Where(proj => proj.DepVersion > appenderDependencyVersion).ToArray();
+
+                var configDetails = filtered
+                    .Select(pa => new { Path = pa.Path + ".config", pa.DepVersion })
+                    .Where(pa => File.Exists(pa.Path))
+                    .ToArray();
+
+                var newVersion = configDetails.Max(cf => cf.DepVersion)?.ToString();
+
+                foreach (var configDetail in configDetails)
                 {
-                    return BootstrappingResult.Failure(new[] { "Failed to copy logging assembly to the output path." });
+                    var updateService = new ConfigBindingRedirectUpdateService(configDetail.Path, new BindingRedirectSettings
+                    {
+                        AssemblyName = "log4net",
+                        Culture = "neutral",
+                        NewVersion = newVersion,
+                        OldVersion = oldVersion,
+                        PublicKeyToken = appenderDependencyPublicKey
+                    });
+                    messages.AddRange(updateService.Update());
+
                 }
             }
-
-            var configFilePaths = potentialAssemblies.Select(
-                filePath =>
+            if (!messages.Any())
+            {
+                var configFilePaths = potentialAssemblies.Select(
+                    filePath =>
                     {
                         var configFileName = GetXmlConfiguratorProperty(filePath, "ConfigFile");
                         if (configFileName != null)
@@ -109,9 +151,10 @@ namespace Apprenda.Log4NetConnectorPolicy
                         return filePath + (configExtension.StartsWith(".") ? string.Empty : ".") + configExtension;
                     });
 
-            var messages =
-                configFilePaths.SelectMany(
-                    configFilePath => new Log4NetConfigurationUpdateService(configFilePath).Update());
+                messages.AddRange(
+                    configFilePaths.SelectMany(
+                        configFilePath => new Log4NetConfigurationUpdateService(configFilePath).Update()));
+            }
 
             return BootstrappingResultExtension.SuccessIfNoMessages(messages);
         }

@@ -30,7 +30,6 @@ namespace Apprenda.Log4NetConnectorPolicy.Tests
     {
         [Theory,
         InlineData(ResourceNames.AspWithConfigSectionExplicit), 
-        InlineData(ResourceNames.AspFx4WithConfigSectionHandlerExplicit), 
         InlineData(ResourceNames.AspWithStandaloneAttribute),
         InlineData(ResourceNames.AspWithStandaloneExplicit),
         InlineData(ResourceNames.WcfWithConfigSectionAttribute),
