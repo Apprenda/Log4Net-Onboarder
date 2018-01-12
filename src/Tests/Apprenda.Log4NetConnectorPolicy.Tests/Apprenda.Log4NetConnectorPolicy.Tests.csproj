@@ -93,8 +93,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Harness\ResourceNames.cs" />
     <Compile Include="SupportTests\SupportResourcesArePresentTests.cs" />
-    <Compile Include="WorkloadTests\Class1.cs" />
     <Compile Include="WorkloadTests\InvalidWorkloadTests.cs" />
+    <Compile Include="WorkloadTests\WcfAppconfigExplictitWorkloadTest.cs" />
     <Compile Include="WorkloadTests\WcfWithStandaloneAttributeWorkloadTests.cs" />
     <Compile Include="Harness\ZipFileLocator.cs" />
     <Compile Include="SupportTests\ZipFileLocatorTests.cs" />

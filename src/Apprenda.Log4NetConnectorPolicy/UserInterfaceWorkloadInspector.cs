@@ -132,7 +132,7 @@ namespace Apprenda.Log4NetConnectorPolicy
             }
 
             var appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
-            var appenderDepedencyPublicKey =
+            var appenderDependencyPublicKey =
                 AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
             var oldVersion = appenderDependencyVersion.ToString();
 
@@ -178,7 +178,8 @@ namespace Apprenda.Log4NetConnectorPolicy
                     AssemblyName = "log4net",
                     CorrectNamespace = true,
                     Culture = "neutral",
-                    OldVersion = appenderDependencyVersion.ToString(),
+                    PublicKeyToken = appenderDependencyPublicKey,
+                    OldVersion = oldVersion,
                     NewVersion = configFiles.Union(new [] {new { Path = string.Empty, DepVersion = appenderDependencyVersion}}).Max(cf => cf.DepVersion).ToString()
                 }).Update();
 

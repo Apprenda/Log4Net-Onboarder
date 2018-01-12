@@ -183,5 +183,21 @@ namespace Apprenda.Integrations.Inspection
                 return default(string);
             }
         }
+
+        public static bool IsStrongNamed(string probedAssembly)
+        {
+            try
+            {
+                var defined = AssemblyDefinition.ReadAssembly(probedAssembly);
+
+                return defined.Name.HasPublicKey;
+            }
+            catch (BadImageFormatException)
+            {
+                // if we can't load it, it has no strong name...
+
+                return false;
+            }
+        }
     }
 }

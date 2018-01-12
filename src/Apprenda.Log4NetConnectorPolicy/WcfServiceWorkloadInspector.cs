@@ -69,7 +69,7 @@ namespace Apprenda.Log4NetConnectorPolicy
             var messages = new List<string>();
             var assemblyPath = this._request.ComponentPath;
             Version appenderDependencyVersion;
-            string appenderDepedencyPublicKey;
+            string appenderDependencyPublicKey;
             if (!File.Exists(Path.Combine(assemblyPath, "log4net.dll")))
             {
                 // no log4net requires no modifications.
@@ -99,7 +99,7 @@ namespace Apprenda.Log4NetConnectorPolicy
                         }
 
                         appenderDependencyVersion = AssemblyExtensions.GetDependencyVersion(appenderPath, "log4net");
-                        appenderDepedencyPublicKey =
+                        appenderDependencyPublicKey =
                             AssemblyExtensions.GetDependencyPublicKeyToken(appenderPath, "log4net");
                     }
                     else
@@ -130,7 +130,7 @@ namespace Apprenda.Log4NetConnectorPolicy
                         Culture = "neutral",
                         NewVersion = newVersion,
                         OldVersion = oldVersion,
-                        PublicKeyToken = appenderDepedencyPublicKey
+                        PublicKeyToken = appenderDependencyPublicKey
                     });
                     messages.AddRange(updateService.Update());
 
