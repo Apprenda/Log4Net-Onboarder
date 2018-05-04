@@ -37,4 +37,6 @@ The following Bootstrap Policy must be created in the Configuration>Application 
 |Conditions	|Always bootstrap to all deployed components
 
 
-Once the Bootstrap Policy is created, any newly deployed .NET UI and WCF service workloads will leverage the Appender to write logs that will appear in the Developer Portal.  Components deployed prior to the completion of this set up should be undeployed and then redeployed in order for the Appender to take effect.
+Once the Bootstrap Policy is created, any<sup>[1]</sup> newly deployed .NET UI and WCF service workloads will leverage the Appender to write logs that will appear in the Developer Portal.  Components deployed prior to the completion of this set up should be undeployed and then redeployed in order for the Appender to take effect.
+
+<sup>[1]</sup>Platform applications which would like to take advantage of the log4net bootstrapping capability **_must_** use the same version of the log4net assembly that the bootstrapper has been compiled with. 
